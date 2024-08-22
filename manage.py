@@ -10,6 +10,8 @@ import socketio
 import time
 from interval_timer import IntervalTimer
 from datetime import datetime
+
+
 currentDateAndTime = datetime.now()
 
 
@@ -19,6 +21,8 @@ sio.attach(app)
 
 lastStatus = ['no last status ...']
 chatHistory = []
+
+
 @sio.on('connect')
 async def connect(sid, environ):
     print('connected deviced' , sid)
