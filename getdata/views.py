@@ -45,10 +45,10 @@ def NLP(message):
             resault = search(query)
             return (resault)
     if (message in hello):
-        rand = random.randint(0, len(helloAnswer))
+        rand = random.randint(0, len(helloAnswer)-1)
         return helloAnswer[rand]
     if(message in goodSpeech):
-        rand = random.randint(0, len(goodSpeechAnswer))
+        rand = random.randint(0, len(goodSpeechAnswer)-1)
         return goodSpeechAnswer[rand]
     if (message in toDo):
         return ('im not sure i can do this for now , give me more time!!')

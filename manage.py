@@ -42,6 +42,7 @@ async def chat(sid , data):
     chatHistory.append(data)
     print(data)
     answer = views.NLP(data['data'])
+    print('answer' , answer)
     await sio.emit('answer' , {'data' : answer , 'message' : answer})
 
 
