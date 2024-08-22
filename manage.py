@@ -8,32 +8,67 @@ from getdata import views
 import socketio
 # from wsgi import app
 import time
+from interval_timer import IntervalTimer
+from datetime import datetime
+currentDateAndTime = datetime.now()
+
 
 sio = socketio.AsyncServer(cors_allowed_origins="*" , async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
-
+lastStatus = ['no last status ...']
+chatHistory = []
 @sio.on('connect')
 async def connect(sid, environ):
-    while True:
-        await sio.emit('backData', {'data' : 'its test for this  server!!!' })
-        time.sleep(50)
-    print('connect deviced', sid )
-    
+    print('connected deviced' , sid)
+    #await sio.emit('backData', {'data' : "connection reset..." })
+    #print(lastStatus[-1])
+    await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
+
 
 @sio.on('disconnect')
 def disconnect(sid):
     print('disconnect device' , sid)
- 
 
-# @sio.on('get')
-# async def currency(sid):
-#     # here we should make data ready for emiting
-#     currenciesData = views.dataReader()
-#     # print (currenciesData)
-#     await sio.emit('backData', {'data' : currenciesData })
-#     print('data already sent')
+
+@sio.on('message')
+async def chat(sid , data):
+    print('chat activate')
+    chatHistory.append(data)
+    print(data)
+    await sio.emit('answer' , {'data' : 'test data passed successfully' , 'message' : data['data']})
+
+
+
+@sio.on('get')
+async def currency(sid):
+    # here we should make data ready for emiting
+    # currenciesData = views.dataReader()
+    # print (currenciesData)
+    d = lastStatus[::-1]
+    history = d[::50]
+    await sio.emit('history' , {'data' : d})
+    print('data already sent')
+
+
+
+@sio.on('new message')
+async def currency(sid , data):
+     #here we should make data ready for emiting
+     #currenciesData = views.dataReader()
+     #print (currenciesData)
+     print('data refreshed from spider' , data)
+     lastStatus.append(data['data'])
+     await sio.emit('backData', {'data' : data['data'] })
+     #print('data already sent')
+
+
+@sio.on('analyzor')
+async def analyzor(sid , data):
+     print('new data from spider analyzor>>>' , data)
+     lastStatus.append(data['data'])
+     await sio.emit('backData2' , {'data' : data['data']})
 
 
 
@@ -71,4 +106,4 @@ def main():
 
 if __name__ == '__main__':  
     # main()
-    web.run_app(app , host='localhost', port=8000)
+    web.run_app(app , host='localhost', port=4000)
