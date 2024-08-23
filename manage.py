@@ -46,8 +46,7 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    # print(data)
-    # ip = data['ip']
+
     print('chat activate')
     chatHistory.append(data)
     print(data)
@@ -58,6 +57,7 @@ async def chat(sid , data):
 =======
     await sio.emit('answer' , {'data' : answer , 'message' : answer} , room=sid)
 >>>>>>> 7ddccf9be8012530adeea395bad90d41ed8db62c
+
 
 
 @sio.on('get')
