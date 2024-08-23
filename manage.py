@@ -132,15 +132,15 @@ async def chat(sid , data):
             print(waitedMessage)
             await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
 
-    elif ('say to hussain' in data['data']):
-        message = data['data'].replace('say to hussain' , '')
+    elif ('say to Hussain' in data['data']):
+        message = data['data'].replace('say to Hussain' , '')
         if (bossessId['hossein'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
         else:
             waitedMessage['hossein'].append(message)
             await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
-    elif('tell to hussain' in data['data']):
-        message = data['data'].replace('tell to hussain' , '')
+    elif('tell to Hussain' in data['data']):
+        message = data['data'].replace('tell to Hussain' , '')
         if(bossessId['hossein'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
         else:
