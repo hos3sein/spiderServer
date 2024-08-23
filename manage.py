@@ -37,6 +37,7 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
+    ipAddress = sid.handshake.address
     print('chat activate')
     chatHistory.append(data)
     print(data)

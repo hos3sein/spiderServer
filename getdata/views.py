@@ -35,7 +35,6 @@ def NLP(message):
         if (message2[0] == 'search'):
             query = message.replace('search' , '' , 1)
             query = message.replace('about' , '' , 1)
-            
             resault = search(query)
             return (resault)
         elif(message2[0]!='search'):
@@ -44,18 +43,19 @@ def NLP(message):
             query = message.replace('about' , '' , 1)
             resault = search(query)
             return (resault)
-    if (message in hello):
+    elif (message in hello):
         rand = random.randint(0, len(helloAnswer)-1)
         return helloAnswer[rand]
-    if(message in goodSpeech):
+    elif(message in goodSpeech):
         rand = random.randint(0, len(goodSpeechAnswer)-1)
         return goodSpeechAnswer[rand]
-    if (message in toDo):
+    elif (message in toDo):
         return ('im not sure i can do this for now , give me more time!!')
-    if (message in speaking):
+    elif (message in speaking):
         return ('im a assistant that developed by hossein and elham for helping them but im still under the developing mode')
+    else:
+        return ('i cant understand what you mean...')
     
-
 
 
 def search(query):
