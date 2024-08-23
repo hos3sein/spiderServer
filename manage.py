@@ -23,6 +23,7 @@ lastStatus = ['no last status ...']
 chatHistory = []
 
 bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
+bossessId = {}
 
 @sio.on('connect')
 async def connect(sid, environ):
@@ -31,30 +32,66 @@ async def connect(sid, environ):
     print('ip connection' , environ['HTTP_X_REAL_IP'])
 
     if (IP in bossess['hossein']):
+        bossessId['hossein'] = sid
+        print(bossessId)
         await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back hossein!!!'} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
 
 
     elif (IP in bossess['elham']):
+        bossessId['elham'] = sid
+        print(bossessId)
         await sio.emit('answer', {'data' :  f'elham is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back elham!!!'} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
 
 
 @sio.on('disconnect')
 def disconnect(sid):
+    if (bossessId['hossein'] == sid):
+        print('hossein disconnected')
+        bossessId['hossein'] = ''
+    elif(bossessId['elham'] == sid):
+        print('elham disconnected')
+        bossessId['elham'] = ''
     print(f'disconnect device with ip : ' , sid)
 
 
 
 @sio.on('message')
 async def chat(sid , data):
+    if ( 'say to elham' in data['data']):
+        message = data['data'].replace('say to elham' , '')
+        if (bossessId['elham'] != ''):
+            await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+        else:
+            await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
+    elif('tell to elham' in data['data']):
+        message = data['data'].replace('tell to elham' , '')
+        if(bossessId['elham'] != ''):
+            await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+        else:
+            await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
 
-    print('chat activate')
-    chatHistory.append(data)
-    print(data)
-    answer = views.NLP(data['data'])
-    print('answer' , answer)
-    await sio.emit('answer' , {'data' : answer , 'message' : answer} , room=sid)
+    elif ( 'say to hossein' in data['data']):
+        message = data['data'].replace('say to hossein' , '')
+        if (bossessId['hossein'] != ''):
+            await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+        else:
+            await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
+    elif('tell to hossein' in data['data']):
+        message = data['data'].replace('tell to hossein' , '')
+        if(bossessId['hossein'] != ''):
+            await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+        else:
+            await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
+
+    else:
+        print('chat activate')
+        chatHistory.append(data)
+        print(data)
+        answer = views.NLP(data['data'])
+        print('answer' , answer)
+        await sio.emit('answer' , {'data' : answer , 'message' : answer} , room=sid)
 
 
 
