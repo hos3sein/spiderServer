@@ -25,7 +25,7 @@ chatHistory = []
 bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
-lastStatus = ['give me a last status' , 'give me last status' , 'tell me last status' , 'whats the last status' , 'tell me the last status' , 'last status' , 'whats spider status' , 'whats status']
+Status = ['give me a last status' , 'give me last status' , 'tell me last status' , 'whats the last status' , 'tell me the last status' , 'last status' , 'whats spider status' , 'whats status']
 
 @sio.on('connect')
 async def connect(sid, environ):
@@ -148,7 +148,7 @@ async def chat(sid , data):
             await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
     
 
-    elif(data['data'] in lastStatus):
+    elif(data['data'] in Status):
         await sio.emit('answer' , {'data' : lastStatus[-1] , 'message' : lastStatus[-1]} , room=sid)
     else:
         print('chat activate')
