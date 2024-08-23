@@ -42,8 +42,8 @@ async def connect(sid, environ):
 
 
 @sio.on('disconnect')
-def disconnect(sid):
-    print('disconnect device' , sid)
+def disconnect(sid , environ):
+    print(f'disconnect device with ip : {environ['HTTP_X_REAL_IP']}' , sid)
 
 @sio.on('message')
 async def chat(sid , data):
