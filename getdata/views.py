@@ -58,6 +58,34 @@ def NLP(message):
     
 
 
+
+
+def finalSearch(url):
+    # Making a GET request
+    import requests
+    from bs4 import BeautifulSoup
+    # Making a GET request
+    r = requests.get(url)
+    # Parsing the HTML
+    soup = BeautifulSoup(r.content, 'html.parser')
+    title = soup.find('title')
+    body = soup.find('body')
+    # s = soup.find('p')
+    content = body.find_all('p')
+    allData = []
+    # print(content[0])
+    for i in content:
+        # print(i.string)
+        i = i.string
+        if (i != None):
+            allData.append(i)
+
+    return(allData)
+
+
+
+
+
 def search(query):
     params = {
         "q": query,          # query example
@@ -71,7 +99,7 @@ def search(query):
         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
     }
 
-    page_limit = 10          # page limit if you don't need to fetch everything
+    page_limit = 4         # page limit if you don't need to fetch everything
     page_num = 0
 
     data = []
@@ -92,11 +120,11 @@ def search(query):
                 snippet = None
             links = result.select_one(".yuRUbf a")["href"]
         
-            data.append({
-            "title": title,
-            "snippet": snippet,
-            "links": links
-            })
+            try:
+                search = finalSearch(links)
+                data.append(search)
+            except:
+                print('error')
         
         # stop loop due to page limit condition
         if page_num == page_limit:
@@ -106,8 +134,12 @@ def search(query):
             params["start"] += 10
         else:
             break
-    print(json.dumps(data, indent=2, ensure_ascii=False))
-    return (json.dumps(data, indent=2, ensure_ascii=False))
+    # print(json.dumps(data, indent=2, ensure_ascii=False))
+    body = ''
+    for i in data:
+        for j in i:
+            body.join(str(x) for x in j)
+    return (body)
 
 
 
