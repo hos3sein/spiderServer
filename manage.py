@@ -33,7 +33,7 @@ async def connect(sid, environ):
 
     if (IP in bossess['hossein']):
         await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back hossein!!!'} , room = sid)
-        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
+        await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
 
 
     elif (IP in bossess['elham']):
