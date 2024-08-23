@@ -26,8 +26,8 @@ chatHistory = []
 @sio.on('connect')
 async def connect(sid, environ):
     print('connected deviced' , sid)
-    ipAddress = sid.handshake.address
-    print('ip connection' , ipAddress)
+    # ipAddress = sid.handshake.address
+    print('ip connection' , environ)
     #await sio.emit('backData', {'data' : "connection reset..." })
     #print(lastStatus[-1])
     await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
