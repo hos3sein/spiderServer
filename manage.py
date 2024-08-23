@@ -44,6 +44,8 @@ async def connect(sid, environ):
 def disconnect(sid):
     print(f'disconnect device with ip : ' , sid)
 
+
+
 @sio.on('message')
 async def chat(sid , data):
 
@@ -51,12 +53,8 @@ async def chat(sid , data):
     chatHistory.append(data)
     print(data)
     answer = views.NLP(data['data'])
-<<<<<<< HEAD
     print('answer' , answer)
-    await sio.emit('answer' , {'data' : answer , 'message' : answer})
-=======
     await sio.emit('answer' , {'data' : answer , 'message' : answer} , room=sid)
->>>>>>> 7ddccf9be8012530adeea395bad90d41ed8db62c
 
 
 
