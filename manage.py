@@ -22,14 +22,23 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 
+bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['']}
+
 
 @sio.on('connect')
 async def connect(sid, environ):
     print('connected deviced' , sid)
+    IP = environ['HTTP_X_REAL_IP']
     print('ip connection' , environ['HTTP_X_REAL_IP'])
-    await sio.emit('backData', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}'} , room = sid)
-    #print(lastStatus[-1])
-    await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
+
+    if (IP in bossess['hossein']):
+        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back hossein!!!'} , room = sid)
+        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
+
+
+    elif (IP in bossess['elham']):
+        await sio.emit('answer', {'data' :  f'elham is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back elham!!!'} , room = sid)
+        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
 
 
 @sio.on('disconnect')
