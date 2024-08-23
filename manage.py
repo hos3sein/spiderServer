@@ -24,6 +24,8 @@ chatHistory = []
 
 bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
+waitedMessage = {'hosseind' : '' , 'elham' : ''}
+
 
 @sio.on('connect')
 async def connect(sid, environ):
@@ -35,6 +37,8 @@ async def connect(sid, environ):
         bossessId['hossein'] = sid
         print(bossessId)
         await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back hossein!!!'} , room = sid)
+        if (waitedMessage['hossein'] != ''):
+                await sio.emit('answer', {'data' :  f'you have unread message from hosseind => {waitedMessage['hossein']}' , 'message' : f'you have unread message from hosseind => {waitedMessage['hossein']}'} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
 
 
@@ -42,6 +46,8 @@ async def connect(sid, environ):
         bossessId['elham'] = sid
         print(bossessId)
         await sio.emit('answer', {'data' :  f'elham is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back elham!!!'} , room = sid)
+        if (waitedMessage['elham'] != ''):
+                await sio.emit('answer', {'data' :  f'you have unread message from hosseind => {waitedMessage['elham']}' , 'message' : f'you have unread message from hosseind => {waitedMessage['elham']}'} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
 
 
@@ -59,30 +65,36 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if ( 'say to Ellie' in data['data']):
+    if ('say to Ellie' in data['data']):
         message = data['data'].replace('say to Ellie' , '')
         if (bossessId['elham'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
         else:
+            waitedMessage['elham'] = message
+            print(waitedMessage)
             await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
     elif('tell to Ellie' in data['data']):
         message = data['data'].replace('tell to Ellie' , '')
         if(bossessId['elham'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
         else:
+            waitedMessage['elham'] = message
+            print(waitedMessage)
             await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
 
-    elif ( 'say to hossein' in data['data']):
+    elif ('say to hossein' in data['data']):
         message = data['data'].replace('say to hossein' , '')
         if (bossessId['hossein'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
         else:
+            waitedMessage['elham'] = message
             await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
     elif('tell to hossein' in data['data']):
         message = data['data'].replace('tell to hossein' , '')
         if(bossessId['hossein'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
         else:
+            waitedMessage['elham'] = message
             await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online...'} , room=sid)
 
     else:
