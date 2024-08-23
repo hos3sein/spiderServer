@@ -24,7 +24,7 @@ chatHistory = []
 
 bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
-waitedMessage = {'hosseind' : '' , 'elham' : ''}
+waitedMessage = {'hossein' : '' , 'elham' : ''}
 
 
 @sio.on('connect')
