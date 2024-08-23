@@ -24,9 +24,11 @@ hello = ['hello' , 'hey' , 'are you there?' , 'wake up']
 helloAnswer = ['hello grandPa' , 'hi' , 'im here' , 'hey, whats up?']
 goodSpeech = ['whats up' , 'how are you baby?' , 'how going on?' , 'are you ok?' , 'are you good?']
 goodSpeechAnswer = ['im good!' , 'im good!what about you?' , 'i cant feel anything!' , 'doesnt matter!']
-toDo = ['give me a current price' , 'give me a status of spider' , 'check the spider' , 'whats the marker status' , 'whats the rsi']
+toDo = ['give me a price' , 'give me a status of spider' , 'check the spider' , 'whats the marker status' , 'whats the rsi']
 speaking = ['tell me about yourself' , 'who are you??']
 search = ['search about ']
+
+
 
 
 def NLP(message):
