@@ -22,8 +22,7 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 
-bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['']}
-
+bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
 
 @sio.on('connect')
 async def connect(sid, environ):
@@ -47,8 +46,9 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    ipAddress = sid.handshake.address
-    print('chat activate')
+    print(data)
+    ip = data['ip']
+    print('chat activate' , ip)
     chatHistory.append(data)
     print(data)
     answer = views.NLP(data['data'])
@@ -62,7 +62,7 @@ async def currency(sid):
     # print (currenciesData)
     d = lastStatus[::-1]
     history = d[::50]
-    await sio.emit('history' , {'data' : d})
+    await sio.emit('history' , {'data' : d} , room = sid)
     print('data already sent')
 
 
@@ -73,7 +73,7 @@ async def currency(sid , data):
      #print (currenciesData)
      print('data refreshed from spider' , data)
      lastStatus.append(data['data'])
-     await sio.emit('backData', {'data' : data['data'] })
+     await sio.emit('backData', {'data' : data['data']})
      #print('data already sent')
 
 
