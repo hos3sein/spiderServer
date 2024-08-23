@@ -35,7 +35,6 @@ async def connect(sid, environ):
 def disconnect(sid):
     print('disconnect device' , sid)
 
-
 @sio.on('message')
 async def chat(sid , data):
     print('chat activate')
@@ -44,7 +43,6 @@ async def chat(sid , data):
     answer = views.NLP(data['data'])
     print('answer' , answer)
     await sio.emit('answer' , {'data' : answer , 'message' : answer})
-
 
 
 @sio.on('get')
@@ -56,7 +54,6 @@ async def currency(sid):
     history = d[::50]
     await sio.emit('history' , {'data' : d})
     print('data already sent')
-
 
 
 @sio.on('new message')
