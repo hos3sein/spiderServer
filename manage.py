@@ -65,16 +65,16 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if ('say to Ellie' in data['data']):
-        message = data['data'].replace('say to Ellie' , '')
+    if ('say to Elie' in data['data']):
+        message = data['data'].replace('say to Elie' , '')
         if (bossessId['elham'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
         else:
             waitedMessage['elham'] = message
             print(waitedMessage)
             await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online...'} , room=sid)
-    elif('tell to Ellie' in data['data']):
-        message = data['data'].replace('tell to Ellie' , '')
+    elif('tell to Elie' in data['data']):
+        message = data['data'].replace('tell to Elie' , '')
         if(bossessId['elham'] != ''):
             await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
         else:
