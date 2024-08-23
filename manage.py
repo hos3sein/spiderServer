@@ -23,7 +23,7 @@ lastStatus = ['no last status ...']
 chatHistory = []
 
 bossess = {'hossein' : ['37.44.57.166'] , 'elham' : ['5.114.64.88']}
-bossessId = {}
+bossessId = {'hossein' : '' , 'elham' : ''}
 
 @sio.on('connect')
 async def connect(sid, environ):
