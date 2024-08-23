@@ -46,13 +46,13 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    print(data)
-    ip = data['ip']
-    print('chat activate' , ip)
+    # print(data)
+    # ip = data['ip']
+    print('chat activate')
     chatHistory.append(data)
     print(data)
     answer = views.NLP(data['data'])
-    await sio.emit('answer' , {'data' : answer , 'message' : answer})
+    await sio.emit('answer' , {'data' : answer , 'message' : answer} , room=sid)
 
 
 @sio.on('get')
