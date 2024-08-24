@@ -41,7 +41,7 @@ def counter(message):
             counter+=1
 
     if counter == len(text):
-        ran = random.randint(0 , len(text)-1)
+        ran = random.randint(0 , len(word['hello'])-1)
         return(word['hello'][ran])
 
 
