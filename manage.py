@@ -33,13 +33,15 @@ sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'al
 
 def sCounter(message , wordList):
     tex = message.split(' ')
+    print('tes>>>>' , tex)
     counter = 0
     search = ''
-    for i in tex : 
+    for i in tex :
         if i in wordList:
             counter += 1
         else:
             search +' ' + i
+    print(search)
     return search
 
 
