@@ -21,7 +21,7 @@ sio.attach(app)
 
 lastStatus = ['no last status ...']
 chatHistory = []
-
+validIp = ['62.60.164.218' , '91.107.153.25']
 bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
@@ -104,7 +104,8 @@ async def connect(sid, environ):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
-
+    elif(IP in validIp):
+        await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
     else:
         waitForAnswer[sid] = {'question' : 'identify'}
         print(waitForAnswer)
