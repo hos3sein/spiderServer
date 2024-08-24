@@ -130,6 +130,7 @@ async def chat(sid , data):
         if (waitForAnswer[sid]['question'] == 'identify'):
             name = ident(data['data'])
             bossessId[name] = sid
+            waitForAnswer = {}
             await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
     elif(bossessId['hossein'] != sid or bossessId['elham'] != sid):
         if(waitForAnswer[sid]):
