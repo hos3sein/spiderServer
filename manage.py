@@ -40,8 +40,8 @@ def sCounter(message , wordList):
         if i in wordList:
             counter += 1
         else:
-            search +' ' + i
-    print(search)
+            search +=' ' + i
+    print('messageeeeeeeeeeeee' , search)
     return search
 
 
