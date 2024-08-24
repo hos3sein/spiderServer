@@ -27,9 +27,12 @@ bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give me a last status' , 'give me last status' , 'tell me last status' , 'whats the last status' , 'tell me the last status' , 'last status' , 'whats spider status' , 'whats status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
-darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock' , 'wake' , 'Wake' , 'Up' , 'up' , 'it' , 'It']
+darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock' , 'wake' , 'Wake' , 'Up' , 'up' , 'it' , 'It' , 'shutdown' , 'Shutdown' , 'wakeup' , 'Wakeup']
 darya2 = ['daria' , 'Daria','Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
+identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
 
+
+waitForAnswer = {}
 
 def Darya(message):
     message = message.split(' ')
@@ -42,11 +45,23 @@ def Darya(message):
 
 
 
+
+
 def checkForDarya(message):
     for i in darya2:
         if i in message:
             return True
 
+
+def ident(message):
+    text = message.split(' ')
+    name = ''
+    for i in text:
+        if i in identify:
+            pass;
+        else:
+            name += ' ' + i
+    return (name)
 
 
 def sCounter(message , wordList):
@@ -90,6 +105,10 @@ async def connect(sid, environ):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
 
+    else:
+        waitForAnswer[sid] = {'question' : 'identify'}
+        await sio.emit('answer', {'data' :  f'i dont know you , please identify yourself' , 'message' : 'i dont know you , please identify yourself'} , room = sid)
+
 
 @sio.on('disconnect')
 def disconnect(sid):
@@ -105,10 +124,16 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if (checkForDarya(data['data']) == True):
+    if(waitForAnswer[sid]):
+        if (waitForAnswer[sid]['question'] == 'identify'):
+            name = ident(data['data'])
+            bossessId[name] = sid
+            await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+    elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
         await sio.emit('laptop' , {'data' : command})
         await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
+
     elif('say to' in data['data']):
         message = sCounter(data['data'] , sendMessage)
         if (sid == bossessId['hossein']):
