@@ -31,7 +31,7 @@ darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock'
 darya2 = ['daria' , 'Daria' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 
 
-def darya(message):
+def Darya(message):
     message = message.split(' ')
     command = ''
     for i in message:
@@ -106,7 +106,7 @@ def disconnect(sid):
 @sio.on('message')
 async def chat(sid , data):
     if (checkForDarya(data['data']) == True):
-        command = darya(data['data'])
+        command = Darya(data['data'])
         await sio.emit('laptop' , {'data' : command})
         await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
     elif('say to' in data['data']):
