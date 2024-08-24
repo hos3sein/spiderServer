@@ -107,6 +107,7 @@ async def connect(sid, environ):
     elif(IP in validIp):
         await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
     else:
+        print('is this test>>>')
         waitForAnswer[sid] = {'question' : 'identify'}
         print(waitForAnswer)
         await sio.emit('answer', {'data' :  f'i dont know you , please identify yourself' , 'message' : 'i dont know you , please identify yourself'} , room = sid)
