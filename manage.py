@@ -31,8 +31,7 @@ darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock'
 darya2 = ['daria' , 'Daria','Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
 
-
-waitForAnswer = {}
+waitForAnswer = {'' : ''}
 
 def Darya(message):
     message = message.split(' ')
@@ -126,7 +125,7 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if (waitedMessage != {}):
+    if (waitForAnswer != {}):
         if(waitForAnswer[sid]):
             if (waitForAnswer[sid]['question'] == 'identify'):
                 name = ident(data['data'])
