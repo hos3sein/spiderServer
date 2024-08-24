@@ -27,7 +27,25 @@ bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give me a last status' , 'give me last status' , 'tell me last status' , 'whats the last status' , 'tell me the last status' , 'last status' , 'whats spider status' , 'whats status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
+darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock' , 'wake' , 'Wake' , 'Up' , 'up' , 'it' , 'It']
+darya2 = ['daria' , 'Daria' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 
+
+def darya(message):
+    message = message.split(' ')
+    command = ''
+    for i in message:
+        if i in darya:
+            command += ' ' + i
+    print(command)
+    return command
+
+
+
+def checkForDarya(message):
+    for i in darya2:
+        if i in message:
+            return True
 
 
 
@@ -87,9 +105,10 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if ('darya' in data['data'] or 'daria' in data['data']  or 'dario' in data['data']):
-        await sio.emit('laptop' , {'data' : 'test pass from connection to laptop...'})
-        await sio.emit('answer' , {'data' : 'test pass from connection to laptop...' , 'message' : 'test pass from connection to laptop...'} , room=sid)
+    if (checkForDarya(data['data']) == True):
+        command = darya(data['data'])
+        await sio.emit('laptop' , {'data' : command})
+        await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
     elif('say to' in data['data']):
         message = sCounter(data['data'] , sendMessage)
         if (sid == bossessId['hossein']):
