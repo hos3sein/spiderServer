@@ -31,6 +31,7 @@ search = ['search about ']
 hello = ['hello' , 'hi' , 'how' , 'are' , 'you' , 'whats' , 'app' , 'App' , 'friend' , 'boy' , 'boddy' ,'Hello' , 'Hi' , 'How' , 'Are' , 'You' , 'Whats' , 'app' , 'App' , 'Friend' , 'Boy' , 'Boddy' ]
 word = {'hello' : ['hi' , 'whatsApp' , 'hello sir, wellcome back' , 'hello again']}
 
+searchTitles = ['tell' , 'Tell' , 'say' , 'Say' , 'Me' , 'me' , 'to' , 'To' , 'about' , 'About' , 'can' , 'Can' , 'you' , 'You' , 'search' , 'Search']
 
 
 def counter(message):
@@ -45,21 +46,36 @@ def counter(message):
         return(word['hello'][ran])
 
 
+def sCounter(message):
+    tex = message.split(' ')
+    counter = 0
+    search = ''
+    for i in tex : 
+        if i in searchTitles:
+            counter += 1
+        else:
+            search = i
+    return search
+
+
 
 def NLP(message):
     if ('search' in message):
-        message2 = message.split(' ')
-        if (message2[0] == 'search'):
-            query = message.replace('search' , '' , 1)
-            query = message.replace('about' , '' , 1)
-            resault = search(query)
-            return (resault)
-        elif(message2[0]!='search'):
-            message = message.replace(message2[0] , '' , 1)
-            query = message.replace('search' , '' , 1)
-            query = message.replace('about' , '' , 1)
-            resault = search(query)
-            return (resault)
+        searchT = sCounter(message)
+        return searchT
+        # message2 = message.split(' ')
+        # if (message2[0] == 'search'):
+        #     query = message.replace('search' , '' , 1)
+        #     query = message.replace('about' , '' , 1)
+        #     resault = search(query)
+        #     return (resault)
+        # elif(message2[0]!='search'):
+        #     message = message.replace(message2[0] , '' , 1)
+        #     query = message.replace('search' , '' , 1)
+        #     query = message.replace('about' , '' , 1)
+        #     resault = search(query)
+        #     return (resault)
+        
     elif ('hello' in message):
         return counter(message)
     elif(message in goodSpeech):
