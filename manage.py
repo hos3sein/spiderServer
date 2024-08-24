@@ -144,7 +144,7 @@ async def chat(sid , data):
             for i in bossessId.keys():
                 if bossessId[i] == sid:
                     valid = True
-            if valid==True:
+            if (valid != True):
                 await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     elif (checkForDarya(data['data']) == True):
@@ -169,6 +169,38 @@ async def chat(sid , data):
                 print(waitedMessage)
                 await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
     elif('tell to' in data['data']):
+        message = sCounter(data['data'] , sendMessage)
+        if (sid == bossessId['hossein']):
+            if (bossessId['elham'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+            else:
+                waitedMessage['elham'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online'} , room=sid)
+        elif(sid == bossessId['elham']):
+            if (bossessId['hossein'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+            else:
+                waitedMessage['hossein'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
+    elif('say' in data['data']):
+        message = sCounter(data['data'] , sendMessage)
+        if (sid == bossessId['hossein']):
+            if (bossessId['elham'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+            else:
+                waitedMessage['elham'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online'} , room=sid)
+        elif(sid == bossessId['elham']):
+            if (bossessId['hossein'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+            else:
+                waitedMessage['hossein'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
+    elif('tell' in data['data']):
         message = sCounter(data['data'] , sendMessage)
         if (sid == bossessId['hossein']):
             if (bossessId['elham'] != ''):
