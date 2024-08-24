@@ -67,6 +67,8 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
+    if ('darya' in data['data'] or 'daria' in data['data']  or 'dario' in data['data']):
+        await sio.emit('laptop' , {'data' : 'test pass from connection to laptop...'})
     if ('say to Elie' in data['data']):
         message = data['data'].replace('say to Elie' , '')
         if (bossessId['elham'] != ''):
