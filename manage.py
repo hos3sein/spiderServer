@@ -126,14 +126,15 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if(waitForAnswer[sid]):
-        if (waitForAnswer[sid]['question'] == 'identify'):
-            name = ident(data['data'])
-            bossessId[name] = sid
-            waitForAnswer = {}
-            await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
-    elif(bossessId['hossein'] != sid or bossessId['elham'] != sid):
+    if (waitedMessage != {}):
         if(waitForAnswer[sid]):
+            if (waitForAnswer[sid]['question'] == 'identify'):
+                name = ident(data['data'])
+                bossessId[name] = sid
+                waitForAnswer = {}
+                await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+    elif(bossessId['hossein'] != sid or bossessId['elham'] != sid):
+        if(waitForAnswer == {}):
             await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
             await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     elif (checkForDarya(data['data']) == True):
