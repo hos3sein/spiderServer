@@ -31,7 +31,7 @@ search = ['search about ']
 hello = ['hello' , 'hi' , 'how' , 'are' , 'you' , 'whats' , 'app' , 'App' , 'friend' , 'boy' , 'boddy' ,'Hello' , 'Hi' , 'How' , 'Are' , 'You' , 'Whats' , 'app' , 'App' , 'Friend' , 'Boy' , 'Boddy' ]
 word = {'hello' : ['hi' , 'whatsApp' , 'hello sir, wellcome back' , 'hello again']}
 
-searchTitles = ['tell' , 'Tell' , 'say' , 'Say' , 'Me' , 'me' , 'to' , 'To' , 'about' , 'About' , 'can' , 'Can' , 'you' , 'You' , 'search' , 'Search']
+searchTitles = ['tell' , 'Tell' , 'say' , 'Say' , 'Me' , 'me' ,'for' , 'For' , 'to' , 'To' , 'about' , 'About' , 'can' , 'Can' , 'you' , 'You' , 'search' , 'Search']
 
 
 def counter(message):
