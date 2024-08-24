@@ -20,14 +20,29 @@ def getAllData(request):
     return HttpResponse(data)
 
 
-hello = ['hello' , 'hey' , 'are you there?' , 'wake up']
-helloAnswer = ['hello grandPa' , 'hi' , 'im here' , 'hey, whats up?']
+# hello = ['hello' , 'hey' , 'are you there?' , 'wake up']
+# helloAnswer = ['hello grandPa' , 'hi' , 'im here' , 'hey, whats up?']
 goodSpeech = ['whats up' , 'how are you baby?' , 'how going on?' , 'are you ok?' , 'are you good?']
 goodSpeechAnswer = ['im good!' , 'im good!what about you?' , 'i cant feel anything!' , 'doesnt matter!']
 toDo = ['give me a price' , 'give me a status of spider' , 'check the spider' , 'whats the marker status' , 'whats the rsi']
 speaking = ['tell me about yourself' , 'who are you??']
 search = ['search about ']
 
+hello = ['hello' , 'hi' , 'how' , 'are' , 'you' , 'whats' , 'app' , 'App' , 'friend' , 'boy' , 'boddy' ,'Hello' , 'Hi' , 'How' , 'Are' , 'You' , 'Whats' , 'app' , 'App' , 'Friend' , 'Boy' , 'Boddy' ]
+word = {'hello' : ['hi' , 'whatsApp' , 'hello sir, wellcome back' , 'hello again']}
+
+
+
+def counter(message):
+    text = message.split(' ')
+    counter = 0
+    for i in text:
+        if i in hello:
+            counter+=1
+
+    if counter == len(text):
+        ran = random.randint(0 , len(text)-1)
+        return(word['hello'][ran])
 
 
 
@@ -45,9 +60,8 @@ def NLP(message):
             query = message.replace('about' , '' , 1)
             resault = search(query)
             return (resault)
-    elif (message in hello):
-        rand = random.randint(0, len(helloAnswer)-1)
-        return helloAnswer[rand]
+    elif ('hello' in message):
+        return counter(message)
     elif(message in goodSpeech):
         rand = random.randint(0, len(goodSpeechAnswer)-1)
         return goodSpeechAnswer[rand]
