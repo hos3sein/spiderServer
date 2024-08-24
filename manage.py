@@ -107,6 +107,7 @@ async def connect(sid, environ):
 
     else:
         waitForAnswer[sid] = {'question' : 'identify'}
+        print(waitForAnswer)
         await sio.emit('answer', {'data' :  f'i dont know you , please identify yourself' , 'message' : 'i dont know you , please identify yourself'} , room = sid)
 
 
@@ -129,6 +130,10 @@ async def chat(sid , data):
             name = ident(data['data'])
             bossessId[name] = sid
             await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+    elif(bossessId['hossein'] != sid or bossessId['elham'] != sid):
+        if(waitForAnswer[sid]):
+            await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
+            await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
         await sio.emit('laptop' , {'data' : command})
