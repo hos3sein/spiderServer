@@ -62,10 +62,10 @@ def sCounter(message):
 def NLP(message):
     if ('search' in message):
         searchT = sCounter(message)
-        return searchT
+        return f"i can't search about {searchT} now , please wait"
     elif('tell me' in message):
         searchT = sCounter(message)
-        return searchT
+        return f"i can't search about {searchT} now , please wait"
    
     elif ('hello' in message):
         return counter(message)
