@@ -30,7 +30,7 @@ sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'al
 darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock' , 'wake' , 'Wake' , 'Up' , 'up' , 'it' , 'It' , 'shutdown' , 'Shutdown' , 'wakeup' , 'Wakeup']
 darya2 = ['daria' , 'Daria','Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
-waitForAnswer = {}
+waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 
 def Darya(message):
     message = message.split(' ')
@@ -105,7 +105,7 @@ async def connect(sid, environ):
     elif(IP in validIp):
         await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
     else:
-        waitForAnswer[sid] = {'question' : 'identify'}
+        waitForAnswer['wait'] = {'id' : sid , 'question' : 'identify'}
         print(waitForAnswer)
         await sio.emit('answer', {'data' :  f'i dont know you , please identify yourself' , 'message' : 'i dont know you , please identify yourself'} , room = sid)
 
@@ -118,21 +118,28 @@ def disconnect(sid):
     elif(bossessId['elham'] == sid):
         print('elham disconnected')
         bossessId['elham'] = ''
+    else:
+        for i in bossessId.keys():
+            if bossessId[i] == sid:
+                bossessId.pop(i)
+                print(f'i left the server....')
+
     print(f'disconnect device with ip : ' , sid)
 
 
 
 @sio.on('message')
 async def chat(sid , data):
-    if (waitForAnswer != {}):
-        if(waitForAnswer[sid]):
-            if (waitForAnswer[sid]['question'] == 'identify'):
+    if (waitForAnswer['wait']['id'] != ''):
+        if(waitForAnswer['wait']['id'] == sid):
+            if (waitForAnswer['wait']['question'] == 'identify'):
                 name = ident(data['data'])
                 bossessId[name] = sid
-                waitForAnswer = {}
+                waitForAnswer['wait']['id'] = ''
+                waitForAnswer['wait']['question'] = ''
                 await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
     elif(bossessId['hossein'] != sid or bossessId['elham'] != sid):
-        if(waitForAnswer == {}):
+        if(waitForAnswer['wait']['id'] == ''):
             await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
             await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     elif (checkForDarya(data['data']) == True):
