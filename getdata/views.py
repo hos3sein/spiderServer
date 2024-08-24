@@ -63,19 +63,10 @@ def NLP(message):
     if ('search' in message):
         searchT = sCounter(message)
         return searchT
-        # message2 = message.split(' ')
-        # if (message2[0] == 'search'):
-        #     query = message.replace('search' , '' , 1)
-        #     query = message.replace('about' , '' , 1)
-        #     resault = search(query)
-        #     return (resault)
-        # elif(message2[0]!='search'):
-        #     message = message.replace(message2[0] , '' , 1)
-        #     query = message.replace('search' , '' , 1)
-        #     query = message.replace('about' , '' , 1)
-        #     resault = search(query)
-        #     return (resault)
-        
+    elif('tell me' in message):
+        searchT = sCounter(message)
+        return searchT
+   
     elif ('hello' in message):
         return counter(message)
     elif(message in goodSpeech):
