@@ -39,7 +39,7 @@ def sCounter(message , wordList):
         if i in wordList:
             counter += 1
         else:
-            search.join(i)
+            search +' ' + i
     return search
 
 
