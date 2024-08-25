@@ -23,7 +23,7 @@ lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
 bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['5.114.64.88']}
-bossessId = {'hossein' : '' , 'elham' : ''}
+bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
@@ -110,7 +110,6 @@ def sCounter(message , wordList):
 @sio.on('connect')
 async def connect(sid, environ , headers):
     print('connected deviced' , sid)
-    
     IP = environ['HTTP_X_REAL_IP']
     print('ip connection' , environ['HTTP_X_REAL_IP'])
 
@@ -143,6 +142,14 @@ async def connect(sid, environ , headers):
 
         print(waitForAnswer)
         await sio.emit('answer', {'data' :  f'i dont know you , please identify yourself' , 'message' : 'i dont know you , please identify yourself'} , room = sid)
+
+
+
+@sio.on('connect' , namespace='/system')
+async def laptopConnection(sid , environ):
+    print('laptop successfully connected')
+    bossessId['laptop'] = sid
+    await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
 
 
 @sio.on('disconnect')
