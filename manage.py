@@ -77,6 +77,8 @@ def checkForDarya(message):
         if i in message:
             checker = True
 
+    return checker
+
 
 def ident(message):
     text = message.split(' ')
