@@ -119,7 +119,7 @@ async def connect(sid, environ):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
                     time.sleep(1)
-        await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
+        await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'} , room=sid)
 
 
     elif (IP in bossess['elham']):
@@ -130,9 +130,9 @@ async def connect(sid, environ):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
                     time.sleep(1)
-        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
+        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
     elif(IP in validIp):
-        await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
+        await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"} , room=bossessId['hossein'])
     else:
         print('is this test>>>')
         waitForAnswer[sid] = {'question' : 'identify'}
