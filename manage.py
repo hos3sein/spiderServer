@@ -121,7 +121,7 @@ async def connect(sid, environ , headers):
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
-                    time.sleep(1)
+                    
         await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'} , room=sid)
 
 
@@ -132,7 +132,7 @@ async def connect(sid, environ , headers):
         if (len(waitedMessage['elham']) != 0):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
-                    time.sleep(1)
+                    
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
     else:
         print('is this test>>>')
@@ -151,10 +151,10 @@ async def laptopConnection(sid , environ):
     if (IP in bossess['laptop']):
         bossessId['laptop'] = sid
         print(bossessId)
-        # time.sleep(1)
+        # 
         await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
     else:
-        # time.sleep(1)
+        # 
         await sio.emit('answer' , {'data' : 'some one want to connect me from your pc' , 'message' : 'isome one want to connect me from your pc'} , room=bossessId['hossein'])
 
 
@@ -241,7 +241,7 @@ async def chat(sid , data):
         else:
             for i in doinglist:
                 await sio.emit('answer' , {'data' : f'{i}' , 'message' : f'{i}'} , room=sid)
-                time.sleep(1)
+                
  
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
