@@ -32,6 +32,8 @@ darya2 = ['daria' , 'Daria' , 'Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' ,
 identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
 waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-do' , 'to-do' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
+onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
+
 doinglist = []
 
 
@@ -43,7 +45,16 @@ def dolist(message):
     for i in text:
         if i in toDoList:
             counter += 1
-    if ((counter/len(text))*100 >= 80):
+    if ((counter/len(text))*100 >= 60):
+        return True
+
+
+def onlineChecker(message):
+    text = message.split(' ')
+    for i in text:
+        if i in onlines:
+            counter += 1
+    if ((counter/len(text))*100 >= 60):
         return True
 
 
@@ -260,6 +271,13 @@ async def chat(sid , data):
             else:
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
+    elif(onlineChecker(data['data']) == True):
+        o = ''
+        onlinepeople = [x for x in bossessId.keys() if bossessId[x] != '']
+        for i in onlinepeople:
+            o += ' ' + i
+        await sio.emit('answer' , {'data' : o , 'message' : f'{o} are online' })
+
     elif (dolist(data['data']) == True):
         if (len(doinglist) == 0):
             await sio.emit('answer' , {'data' : f'you have no task to do now' , 'message' : f'you have no task to do now'} , room=sid)
