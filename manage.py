@@ -22,7 +22,7 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
-bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['5.114.64.88']}
+bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['5.114.64.88'] , 'laptop' : []}
 bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
@@ -145,9 +145,13 @@ async def connect(sid, environ , headers):
 @sio.on('connect' , namespace='/system')
 async def laptopConnection(sid , environ):
     print('laptop successfully connected')
-    bossessId['laptop'] = sid
-    print(bossessId)
-    await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
+    IP = environ['HTTP_MACAddress']
+    if (IP in bossess['laptop']):
+        bossessId['laptop'] = sid
+        print(bossessId)
+        await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
+    else:
+        await sio.emit('answer' , {'data' : 'some one want to connect me from your pc' , 'message' : 'isome one want to connect me from your pc'} , room=bossessId['hossein'])
 
 
 @sio.on('connect' , namespace='/spot')
@@ -177,7 +181,7 @@ async def laptopConnection(sid , environ):
 @sio.on('connect' , namespace='/position')
 async def laptopConnection(sid , environ):
     print('position robot successfully connected')
-    bossessId['laptop'] = sid
+    bossessId['position'] = sid
     print(bossessId)
     await sio.emit('answer' , {'data' : 'i have been conneted to position robot' , 'message' : 'i have been conneted to position robot'} , room=bossessId['hossein'])
 
