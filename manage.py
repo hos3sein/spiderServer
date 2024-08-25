@@ -276,7 +276,7 @@ async def chat(sid , data):
         o = ''
         onlinepeople = [x for x in bossessId.keys() if bossessId[x] != '']
         for i in onlinepeople:
-            o += ' ' + i
+            o += ',' + i
         await sio.emit('answer' , {'data' : o , 'message' : f'{o} are online' })
 
     elif (dolist(data['data']) == True):
