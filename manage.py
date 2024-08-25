@@ -22,7 +22,7 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
-bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['5.114.64.88'] , 'laptop' : []}
+bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['A515FXXU5GVK6'] , 'laptop' : ['98-59-7A-B3-41-4C']}
 bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
@@ -34,6 +34,8 @@ waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-do' , 'to-do' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
 doinglist = []
 
+
+# 'HTTP_MACADDRESS': 'A515FXXU5GVK6'
 
 def dolist(message):
     text = message.split(' ')
@@ -110,8 +112,8 @@ def sCounter(message , wordList):
 @sio.on('connect')
 async def connect(sid, environ , headers):
     print('connected deviced' , sid)
-    IP = environ['HTTP_X_REAL_IP']
-    print('ip connection' , environ)
+    IP = environ['HTTP_MACADDRESS']
+    print('ip connection' , environ['HTTP_MACADDRESS'])
     if (IP in bossess['hossein']):
         bossessId['hossein'] = sid
         print(bossessId)
@@ -149,8 +151,10 @@ async def laptopConnection(sid , environ):
     if (IP in bossess['laptop']):
         bossessId['laptop'] = sid
         print(bossessId)
+        time.sleep(1)
         await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
     else:
+        time.sleep(1)
         await sio.emit('answer' , {'data' : 'some one want to connect me from your pc' , 'message' : 'isome one want to connect me from your pc'} , room=bossessId['hossein'])
 
 
