@@ -31,6 +31,19 @@ darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock'
 darya2 = ['daria' , 'Daria' , 'Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
 waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
+toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
+doinglist = []
+
+
+def dolist(message):
+    text = message.split(' ')
+    counter = 0
+    for i in text:
+        if i in toDoList:
+            counter += 1
+    if ((counter/len(text))*100 >= 80):
+        return True
+
 
 def Darya(message):
     message = message.split(' ')
@@ -48,14 +61,21 @@ def checkStatus(message):
         if i in Status:
             counter += 1
     if ((counter/len(text)*100) >= 80):
+        for i in text:
+            if i in Status:
+                pass
+            else:
+                Status.append(i)
         return True
 
 
 
 def checkForDarya(message):
+    checker = False
+    counter = 0
     for i in darya2:
         if i in message:
-            return True
+            checker = True
 
 
 def ident(message):
@@ -98,6 +118,7 @@ async def connect(sid, environ):
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
+                    time.sleep(1)
         await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
 
 
@@ -108,6 +129,7 @@ async def connect(sid, environ):
         if (len(waitedMessage['elham']) != 0):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
+                    time.sleep(1)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
     elif(IP in validIp):
         await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
@@ -154,6 +176,15 @@ async def chat(sid , data):
             if (valid != True):
                 await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
+    
+    elif (dolist(data['data']) == True):
+        if (len(doinglist) == 0):
+            await sio.emit('answer' , {'data' : f'you have no task to do now' , 'message' : f'you have no task to do now'} , room=sid)
+        else:
+            for i in doinglist:
+                await sio.emit('answer' , {'data' : f'{i}' , 'message' : f'{i}'} , room=sid)
+                time.sleep(1)
+ 
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
         await sio.emit('laptop' , {'data' : command})
