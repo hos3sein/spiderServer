@@ -201,7 +201,7 @@ def disconnect(sid):
     else:
         for i in bossessId.keys():
             if bossessId[i] == sid:
-                bossessId.pop(i)
+                bossessId[i] = ''
                 print(f'{i} left the server....')
 
     print(f'disconnect device with ip : ' , sid)
