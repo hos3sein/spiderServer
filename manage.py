@@ -199,14 +199,37 @@ def disconnect(sid):
         print('elham disconnected')
         sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'} , room=bossessId['hossein'])
         bossessId['elham'] = ''
-    else:
-        for i in bossessId.keys():
-            if bossessId[i] == sid:
-                bossessId[i] = ''
-                sio.emit('answer' , {"data" :f'{i} left the server....' , 'message' : f'{i} left the server....'} , room=bossessId['hossein'])
-                print(f'{i} left the server....')
-
     print(f'disconnect device with ip : ' , sid)
+
+
+
+@sio.on('disconnect' , namespace='/system')
+def disconnect(sid):
+        sio.emit('answer' , {"data" :f'laptop left the server....' , 'message' : f'laptop  left the server....'} , room=bossessId['hossein'])
+        print(f'{'laptop'} left the server....')
+
+
+@sio.on('disconnect' , namespace='/spot')
+def disconnect(sid):
+        sio.emit('answer' , {"data" :f'spot bot left the server....' , 'message' : f'spot bot left the server....'} , room=bossessId['hossein'])
+        print(f'spot left the server....')
+
+
+@sio.on('disconnect' , namespace='/futures')
+def disconnect(sid):
+        sio.emit('answer' , {"data" :f'futures bot left the server....' , 'message' : f'futures bot left the server....'} , room=bossessId['hossein'])
+        print(f'futures bot left the server....')
+
+
+@sio.on('disconnect' , namespace='/analyzor')
+def disconnect(sid):
+        sio.emit('answer' , {"data" :f'analyzor bot left the server....' , 'message' : f'analyzor bot left the server....'} , room=bossessId['hossein'])
+        print(f'analyzor bot left the server....')
+
+@sio.on('disconnect' , namespace='/position')
+def disconnect(sid):
+        sio.emit('answer' , {"data" :f'position bot left the server....' , 'message' : f'position bot left the server....'} , room=bossessId['hossein'])
+        print(f'position bot left the server....')
 
 
 
@@ -247,8 +270,11 @@ async def chat(sid , data):
  
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
-        await sio.emit('laptop' , {'data' : command} , namespace='/system' , room=bossessId['laptop'])
-        await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
+        if (bossessId['laptop'] == ''):
+            await sio.emit('answer' , {'data' : f'sorry boss , your laptop is not online' , 'message' : f'sorry boss , your laptop is not online'} , room=sid)
+        else:
+            await sio.emit('laptop' , {'data' : command} , namespace='/system' , room=bossessId['laptop'])
+            await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
 
     elif('say to' in data['data']):
         message = sCounter(data['data'] , sendMessage)
