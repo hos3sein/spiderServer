@@ -151,10 +151,10 @@ async def laptopConnection(sid , environ):
     if (IP in bossess['laptop']):
         bossessId['laptop'] = sid
         print(bossessId)
-        time.sleep(1)
+        # time.sleep(1)
         await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
     else:
-        time.sleep(1)
+        # time.sleep(1)
         await sio.emit('answer' , {'data' : 'some one want to connect me from your pc' , 'message' : 'isome one want to connect me from your pc'} , room=bossessId['hossein'])
 
 
