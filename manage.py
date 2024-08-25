@@ -22,7 +22,7 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
-bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124'] , 'elham' : ['5.114.64.88']}
+bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
