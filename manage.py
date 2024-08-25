@@ -238,7 +238,7 @@ async def chat(sid , data):
  
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
-        await sio.emit('/system/laptop' , {'data' : command} , room=bossessId['laptop'])
+        await sio.emit('laptop' , {'data' : command} , namespace='/system' , room=bossessId['laptop'])
         await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
 
     elif('say to' in data['data']):
