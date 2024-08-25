@@ -25,12 +25,25 @@ validIp = ['62.60.164.218' , '91.107.153.25']
 bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124'] , 'elham' : ['5.114.64.88']}
 bossessId = {'hossein' : '' , 'elham' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
-Status = ['give me a last status' , 'give me last status' , 'tell me last status' , 'whats the last status' , 'tell me the last status' , 'last status' , 'whats spider status' , 'whats status']
+Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
 darya = ['shut' , 'Shut' , 'down' , 'Down' , 'sleep' , 'Sleep' , 'lock' , 'Lock' , 'wake' , 'Wake' , 'Up' , 'up' , 'it' , 'It' , 'shutdown' , 'Shutdown' , 'wakeup' , 'Wakeup']
-darya2 = ['daria' , 'Daria','Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
+darya2 = ['daria' , 'Daria' , 'Dario' , 'dario' , 'darya' , 'Darya' , 'laptop' , 'system' , 'Laptop' , 'System' , 'laptob' , 'Laptob' , 'my laptop' , 'My laptop' , 'my laptob' , 'My laptop']
 identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' , 'Name' , 'is' , 'Is' , 'am' , 'Am' , 'every' , 'Every' , 'buddy' , 'Buddy' , 'call' , 'Call' , 'me' , 'Me']
 waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
+toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
+doinglist = []
+
+
+def dolist(message):
+    text = message.split(' ')
+    counter = 0
+    for i in text:
+        if i in toDoList:
+            counter += 1
+    if ((counter/len(text))*100 >= 80):
+        return True
+
 
 def Darya(message):
     message = message.split(' ')
@@ -41,14 +54,28 @@ def Darya(message):
     print(command)
     return command
 
-
+def checkStatus(message):
+    text = message.split(' ')
+    counter = 0
+    for i in text:
+        if i in Status:
+            counter += 1
+    if ((counter/len(text)*100) >= 80):
+        for i in text:
+            if i in Status:
+                pass
+            else:
+                Status.append(i)
+        return True
 
 
 
 def checkForDarya(message):
+    checker = False
+    counter = 0
     for i in darya2:
         if i in message:
-            return True
+            checker = True
 
 
 def ident(message):
@@ -91,6 +118,7 @@ async def connect(sid, environ):
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
+                    time.sleep(1)
         await sio.emit('backData' ,{'data' :f'>>>connection reset with ip :{IP} => last status => {lastStatus[-1]}'})
 
 
@@ -101,6 +129,7 @@ async def connect(sid, environ):
         if (len(waitedMessage['elham']) != 0):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
+                    time.sleep(1)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'})
     elif(IP in validIp):
         await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"})
@@ -125,7 +154,7 @@ def disconnect(sid):
         for i in bossessId.keys():
             if bossessId[i] == sid:
                 bossessId.pop(i)
-                print(f'i left the server....')
+                print(f'{i} left the server....')
 
     print(f'disconnect device with ip : ' , sid)
 
@@ -147,9 +176,18 @@ async def chat(sid , data):
             for i in bossessId.keys():
                 if bossessId[i] == sid:
                     valid = True
-            if valid==True:
+            if (valid != True):
                 await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
+    
+    elif (dolist(data['data']) == True):
+        if (len(doinglist) == 0):
+            await sio.emit('answer' , {'data' : f'you have no task to do now' , 'message' : f'you have no task to do now'} , room=sid)
+        else:
+            for i in doinglist:
+                await sio.emit('answer' , {'data' : f'{i}' , 'message' : f'{i}'} , room=sid)
+                time.sleep(1)
+ 
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
         await sio.emit('laptop' , {'data' : command})
@@ -187,8 +225,42 @@ async def chat(sid , data):
                 waitedMessage['hossein'].append(message)
                 print(waitedMessage)
                 await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
-    elif(data['data'] in Status):
+    elif('say' in data['data']):
+        message = sCounter(data['data'] , sendMessage)
+        if (sid == bossessId['hossein']):
+            if (bossessId['elham'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+            else:
+                waitedMessage['elham'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online'} , room=sid)
+        elif(sid == bossessId['elham']):
+            if (bossessId['hossein'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+            else:
+                waitedMessage['hossein'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
+    elif('tell' in data['data']):
+        message = sCounter(data['data'] , sendMessage)
+        if (sid == bossessId['hossein']):
+            if (bossessId['elham'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['elham'])
+            else:
+                waitedMessage['elham'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'elham is not online' , 'message' : 'elham is not online'} , room=sid)
+        elif(sid == bossessId['elham']):
+            if (bossessId['hossein'] != ''):
+                await sio.emit('answer' , {'data' : message , 'message' : message} , room=bossessId['hossein'])
+            else:
+                waitedMessage['hossein'].append(message)
+                print(waitedMessage)
+                await sio.emit('answer' , {'data' : 'hossein is not online' , 'message' : 'hossein is not online'} , room=sid)
+    
+    elif(checkStatus(data['data']) == True):
         await sio.emit('answer' , {'data' : lastStatus[-1] , 'message' : lastStatus[-1]} , room=sid)
+    
     else:
         print('chat activate')
         chatHistory.append(data)

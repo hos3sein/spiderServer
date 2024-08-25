@@ -29,9 +29,10 @@ speaking = ['tell me about yourself' , 'who are you??']
 search = ['search about ']
 
 hello = ['hello' , 'hi' , 'how' , 'are' , 'you' , 'whats' , 'app' , 'App' , 'friend' , 'boy' , 'boddy' ,'Hello' , 'Hi' , 'How' , 'Are' , 'You' , 'Whats' , 'app' , 'App' , 'Friend' , 'Boy' , 'Boddy' ]
+
 word = {'hello' : ['hi' , 'whatsApp' , 'hello sir, wellcome back' , 'hello again']}
 
-searchTitles = ['tell' , 'Tell' , 'say' , 'Say' , 'Me' , 'me' ,'for' , 'For' , 'to' , 'To' , 'about' , 'About' , 'can' , 'Can' , 'you' , 'You' , 'search' , 'Search']
+searchTitles = ['tell' , 'talk' , 'Talk' , 'Tell' , 'say' , 'Say' , 'Me' , 'me' ,'for' , 'For' , 'to' , 'To' , 'about' , 'About' , 'can' , 'Can' , 'you' , 'You' , 'search' , 'Search']
 
 
 def counter(message):
@@ -41,9 +42,12 @@ def counter(message):
         if i in hello:
             counter+=1
 
-    if counter == len(text):
+    if ((counter/len(text)*100) >= 80):
         ran = random.randint(0 , len(word['hello'])-1)
         return(word['hello'][ran])
+
+
+
 
 
 def sCounter(message):
@@ -66,7 +70,9 @@ def NLP(message):
     elif('tell me' in message):
         searchT = sCounter(message)
         return f"i can't search about {searchT} now , please wait"
-   
+    elif('talk' in message):
+        searchT = sCounter(message)
+        return f"i can't search about {searchT} now , please wait"
     elif ('hello' in message):
         return counter(message)
     elif(message in goodSpeech):
