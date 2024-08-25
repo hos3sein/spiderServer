@@ -167,6 +167,8 @@ async def chat(sid , data):
                 waitForAnswer['wait']['id'] = ''
                 waitForAnswer['wait']['question'] = ''
                 await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+        else:
+            await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     elif(bossessId['hossein'] != sid and bossessId['elham'] != sid):
         if(waitForAnswer['wait']['id'] == ''):
             valid = False
