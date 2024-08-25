@@ -159,6 +159,11 @@ def disconnect(sid):
 
 
 
+@sio.on('newFile')
+async def fileChange(sid , data):
+    await sio.emit('answer' , {'data' : data['data'] , 'message' : 'new file added to system , i sent the root and file name to you'})
+
+
 @sio.on('message')
 async def chat(sid , data):
     if(bossessId['hossein'] != sid and bossessId['elham'] != sid):
