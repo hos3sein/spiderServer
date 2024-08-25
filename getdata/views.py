@@ -82,6 +82,8 @@ def NLP(message):
         return ('im not sure i can do this for now , give me more time!!')
     elif (message in speaking):
         return ('im a assistant that developed by hossein and elham for helping them but im still under the developing mode')
+    elif(message == ''):
+        return ('i cant hear you sir')
     else:
         return ('i cant understand what you mean...')
     
