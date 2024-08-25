@@ -23,7 +23,7 @@ lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
 bossess = {'hossein' : ['37.44.57.166' , '94.24.18.124' , '5.114.148.29' , '89.47.65.220'] , 'elham' : ['5.114.64.88']}
-bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : ''}
+bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
@@ -133,8 +133,6 @@ async def connect(sid, environ , headers):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
                     time.sleep(1)
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
-    elif(IP in validIp):
-        await sio.emit('answer', {'data' :  f"the analyzor bot's successfully connected" , 'message' : f"the analyzor bot's successfully connected"} , room=bossessId['hossein'])
     else:
         print('is this test>>>')
         waitForAnswer[sid] = {'question' : 'identify'}
@@ -149,7 +147,40 @@ async def connect(sid, environ , headers):
 async def laptopConnection(sid , environ):
     print('laptop successfully connected')
     bossessId['laptop'] = sid
+    print(bossessId)
     await sio.emit('answer' , {'data' : 'i have been conneted to your laptop' , 'message' : 'i have been conneted to your laptop'} , room=bossessId['hossein'])
+
+
+@sio.on('connect' , namespace='/spot')
+async def laptopConnection(sid , environ):
+    print('spot successfully connected')
+    bossessId['spot'] = sid
+    print(bossessId)
+    await sio.emit('answer' , {'data' : 'i have been conneted to spot robot' , 'message' : 'i have been conneted to spot robot'} , room=bossessId['hossein'])
+
+
+@sio.on('connect' , namespace='/futures')
+async def laptopConnection(sid , environ):
+    print('futures successfully connected')
+    bossessId['futures'] = sid
+    print(bossessId)
+    await sio.emit('answer' , {'data' : 'i have been conneted to futures robot' , 'message' : 'i have been conneted to futures robot'} , room=bossessId['hossein'])
+
+
+@sio.on('connect' , namespace='/analyzor')
+async def laptopConnection(sid , environ):
+    print('analyzor successfully connected')
+    bossessId['analyzor'] = sid
+    print(bossessId)
+    await sio.emit('answer' , {'data' : 'i have been conneted to analyzor' , 'message' : 'i have been conneted to analyzor'} , room=bossessId['hossein'])
+
+
+@sio.on('connect' , namespace='/position')
+async def laptopConnection(sid , environ):
+    print('position robot successfully connected')
+    bossessId['laptop'] = sid
+    print(bossessId)
+    await sio.emit('answer' , {'data' : 'i have been conneted to position robot' , 'message' : 'i have been conneted to position robot'} , room=bossessId['hossein'])
 
 
 @sio.on('disconnect')
@@ -207,7 +238,7 @@ async def chat(sid , data):
  
     elif (checkForDarya(data['data']) == True):
         command = Darya(data['data'])
-        await sio.emit('laptop' , {'data' : command})
+        await sio.emit('/system/laptop' , {'data' : command})
         await sio.emit('answer' , {'data' : f'system successfully {command}' , 'message' : f'system successfully {command}'} , room=sid)
 
     elif('say to' in data['data']):
