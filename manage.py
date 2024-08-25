@@ -110,9 +110,8 @@ def sCounter(message , wordList):
 @sio.on('connect')
 async def connect(sid, environ , headers):
     print('connected deviced' , sid)
-    IP = environ['HTTP_X_REAL_IP']
-    print('ip connection' , environ['HTTP_X_REAL_IP'])
-
+    IP = environ['MACAddress']
+    print('ip connection' , environ['MACAddress'])
     if (IP in bossess['hossein']):
         bossessId['hossein'] = sid
         print(bossessId)
