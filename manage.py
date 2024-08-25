@@ -191,19 +191,19 @@ async def laptopConnection(sid , environ):
 
 
 @sio.on('disconnect')
-async def disconnect(sid):
+def disconnect(sid):
     if (bossessId['hossein'] == sid):
         print('hossein disconnected')
         bossessId['hossein'] = ''
     elif(bossessId['elham'] == sid):
         print('elham disconnected')
-        await sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'})
+        sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'} , room=bossessId['hossein'])
         bossessId['elham'] = ''
     else:
         for i in bossessId.keys():
             if bossessId[i] == sid:
                 bossessId[i] = ''
-                await sio.emit('answer' , {"data" :f'{i} left the server....' , 'message' : f'{i} left the server....'})
+                sio.emit('answer' , {"data" :f'{i} left the server....' , 'message' : f'{i} left the server....'} , room=bossessId['hossein'])
                 print(f'{i} left the server....')
 
     print(f'disconnect device with ip : ' , sid)
