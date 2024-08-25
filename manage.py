@@ -51,6 +51,7 @@ def dolist(message):
 
 def onlineChecker(message):
     text = message.split(' ')
+    counter = 0
     for i in text:
         if i in onlines:
             counter += 1
