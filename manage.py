@@ -110,6 +110,8 @@ def sCounter(message , wordList):
 @sio.on('connect')
 async def connect(sid, environ):
     print('connected deviced' , sid)
+    if (environ['name']):
+        print('name is >>>' , environ['name'])
     IP = environ['HTTP_X_REAL_IP']
     print('ip connection' , environ['HTTP_X_REAL_IP'])
 
