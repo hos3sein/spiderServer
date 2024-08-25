@@ -159,17 +159,7 @@ def disconnect(sid):
 
 @sio.on('message')
 async def chat(sid , data):
-    if (waitForAnswer['wait']['id'] != ''):
-        if(waitForAnswer['wait']['id'] == sid):
-            if (waitForAnswer['wait']['question'] == 'identify'):
-                name = ident(data['data'])
-                bossessId[name] = sid
-                waitForAnswer['wait']['id'] = ''
-                waitForAnswer['wait']['question'] = ''
-                await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
-        else:
-            await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
-    elif(bossessId['hossein'] != sid and bossessId['elham'] != sid):
+    if(bossessId['hossein'] != sid and bossessId['elham'] != sid):
         if(waitForAnswer['wait']['id'] == ''):
             valid = False
             for i in bossessId.keys():
@@ -177,6 +167,16 @@ async def chat(sid , data):
                     valid = True
             if (valid != True):
                 await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
+                await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
+        elif (waitForAnswer['wait']['id'] != ''):
+            if(waitForAnswer['wait']['id'] == sid):
+                if (waitForAnswer['wait']['question'] == 'identify'):
+                    name = ident(data['data'])
+                    bossessId[name] = sid
+                    waitForAnswer['wait']['id'] = ''
+                    waitForAnswer['wait']['question'] = ''
+                    await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+            else:
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
     elif (dolist(data['data']) == True):
