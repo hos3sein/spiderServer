@@ -191,44 +191,44 @@ async def laptopConnection(sid , environ):
 
 
 @sio.on('disconnect')
-def disconnect(sid):
+async def disconnect(sid):
     if (bossessId['hossein'] == sid):
         print('hossein disconnected')
         bossessId['hossein'] = ''
     elif(bossessId['elham'] == sid):
         print('elham disconnected')
-        sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'} , room=bossessId['hossein'])
+        await sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'} , room=bossessId['hossein'])
         bossessId['elham'] = ''
     print(f'disconnect device with ip : ' , sid)
 
 
 
 @sio.on('disconnect' , namespace='/system')
-def disconnect(sid):
-        sio.emit('answer' , {"data" :f'laptop left the server....' , 'message' : f'laptop  left the server....'} , room=bossessId['hossein'])
+async def disconnect(sid):
+        await sio.emit('answer' , {"data" :f'laptop left the server....' , 'message' : f'laptop  left the server....'} , room=bossessId['hossein'])
         print(f'{'laptop'} left the server....')
 
 
 @sio.on('disconnect' , namespace='/spot')
-def disconnect(sid):
-        sio.emit('answer' , {"data" :f'spot bot left the server....' , 'message' : f'spot bot left the server....'} , room=bossessId['hossein'])
+async def disconnect(sid):
+        await sio.emit('answer' , {"data" :f'spot bot left the server....' , 'message' : f'spot bot left the server....'} , room=bossessId['hossein'])
         print(f'spot left the server....')
 
 
 @sio.on('disconnect' , namespace='/futures')
-def disconnect(sid):
-        sio.emit('answer' , {"data" :f'futures bot left the server....' , 'message' : f'futures bot left the server....'} , room=bossessId['hossein'])
+async def disconnect(sid):
+        await sio.emit('answer' , {"data" :f'futures bot left the server....' , 'message' : f'futures bot left the server....'} , room=bossessId['hossein'])
         print(f'futures bot left the server....')
 
 
 @sio.on('disconnect' , namespace='/analyzor')
-def disconnect(sid):
-        sio.emit('answer' , {"data" :f'analyzor bot left the server....' , 'message' : f'analyzor bot left the server....'} , room=bossessId['hossein'])
+async def disconnect(sid):
+        await sio.emit('answer' , {"data" :f'analyzor bot left the server....' , 'message' : f'analyzor bot left the server....'} , room=bossessId['hossein'])
         print(f'analyzor bot left the server....')
 
 @sio.on('disconnect' , namespace='/position')
-def disconnect(sid):
-        sio.emit('answer' , {"data" :f'position bot left the server....' , 'message' : f'position bot left the server....'} , room=bossessId['hossein'])
+async def disconnect(sid):
+        await sio.emit('answer' , {"data" :f'position bot left the server....' , 'message' : f'position bot left the server....'} , room=bossessId['hossein'])
         print(f'position bot left the server....')
 
 
