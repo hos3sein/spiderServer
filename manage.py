@@ -145,7 +145,7 @@ async def connect(sid, environ , headers):
 @sio.on('connect' , namespace='/system')
 async def laptopConnection(sid , environ):
     print('laptop successfully connected')
-    IP = environ['HTTP_MACAddress']
+    IP = environ['HTTP_MACADDRESS']
     if (IP in bossess['laptop']):
         bossessId['laptop'] = sid
         print(bossessId)
