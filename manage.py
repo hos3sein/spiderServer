@@ -379,7 +379,7 @@ async def analyzor(sid , data):
 async def analyzor(sid , data):
      print('new data from spider analyzor>>>' , data)
      lastStatus.append(data['data'])
-    #  await sio.emit('answer' , {'data' : data['data'] , 'message' : f'new message from spot bot recived'})
+     await sio.emit('answer' , {'data' : 'new message from spot recieved' , 'message' : f'new message from spot , {data['data']}'})
      await sio.emit('backData2' , {'data' : data['data']})
 
 
