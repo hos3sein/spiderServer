@@ -250,7 +250,7 @@ async def disconnect(sid):
 
 
 
-@sio.on('newFile')
+@sio.on('newFile' , namespace='/system')
 async def fileChange(sid , data):
     await sio.emit('answer' , {'data' : data['data'] , 'message' : 'new file added to system , i sent the root and file name to you'})
 
@@ -357,7 +357,7 @@ async def currency(sid):
     print('data already sent')
 
 
-@sio.on('new message')
+@sio.on('new message' , namespace='/futures')
 async def currency(sid , data):
      #here we should make data ready for emiting
      #currenciesData = views.dataReader()
@@ -368,7 +368,22 @@ async def currency(sid , data):
      #print('data already sent')
 
 
-@sio.on('analyzor')
+@sio.on('analyzor' , namespace='/analyzor')
+async def analyzor(sid , data):
+     print('new data from spider analyzor>>>' , data)
+     lastStatus.append(data['data'])
+     await sio.emit('backData2' , {'data' : data['data']})
+
+
+@sio.on('spot' , namespace='/spot')
+async def analyzor(sid , data):
+     print('new data from spider analyzor>>>' , data)
+     lastStatus.append(data['data'])
+    #  await sio.emit('answer' , {'data' : data['data'] , 'message' : f'new message from spot bot recived'})
+     await sio.emit('backData2' , {'data' : data['data']})
+
+
+@sio.on('position' , namespace='/position')
 async def analyzor(sid , data):
      print('new data from spider analyzor>>>' , data)
      lastStatus.append(data['data'])
