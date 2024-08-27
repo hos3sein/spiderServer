@@ -121,7 +121,7 @@ def finalSearch(url):
 class broker:
     def __init__(self , token):
         # self.token = token
-        self.header = f"Authorization: Token {token}"
+        self.header = f"Token {token}"
         self.loginUrl = 'https://api.nobitex.ir/auth/login/'
         self.profileUrl = 'https://api.nobitex.ir/users/profile'
         self.balanceUrl = "https://api.nobitex.ir/users/wallets/balance"
@@ -134,7 +134,7 @@ class broker:
     
     def balance(self , currency):
         data = {"currency":currency}
-        balance = requests.post(self.balanceUrl , headers= self.header , data=data)
+        balance = requests.post(self.balanceUrl , headers= {"Authorization" : self.header } , data=data)
         print(balance.json())
         data = balance.json()
         return (data['balance'])
