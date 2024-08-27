@@ -128,7 +128,7 @@ class broker:
         
     
     def profile(self):
-        user = requests.get(self.profileUrl , headers= self.header)
+        user = requests.get(self.profileUrl ,  headers= {"Authorization" : self.header })
         return (user.json())
 
     
