@@ -303,7 +303,8 @@ async def chat(sid , data):
             eth = br.balance('eth')
             usdt = br.balance('usdt')
             await sio.emit('answer' , {'data' : f'usdt : {usdt} , eth : {eth}' , 'message' : f'we have {eth} etherium and {usdt} theter on our exchange' })
-    
+        else :
+            await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
     
     elif(balanceChecker(data['data']) == True):
         waitForPasswor = 1 
