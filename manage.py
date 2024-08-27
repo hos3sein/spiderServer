@@ -12,6 +12,7 @@ from interval_timer import IntervalTimer
 from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
+# exchange = os.getenv("APIKEY")
 currentDateAndTime = datetime.now()
 
 
@@ -33,6 +34,7 @@ identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' ,
 waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-do' , 'to-do' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
 onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
+balance = ['my' , 'My' , 'balance' , 'Balance' , 'give' , 'Give' , 'me' , 'Me' , 'waht' , 'What' , 'is' , 'Is' , 'how' , 'How' , 'much' , 'Much' , 'money' , 'Money' , 'i' , 'I' , 'have' , 'Have' , 'check' , 'Check']
 
 waitForPasswor = 0
 
@@ -40,6 +42,17 @@ doinglist = []
 
 
 # 'HTTP_MACADDRESS': 'A515FXXU5GVK6'
+
+def balanceChecker(message):
+    text = message.split(' ')
+    counter = 0
+    for i in text:
+        if i in balance:
+            counter += 1
+    if (counter == len(text)):
+        return True
+
+
 
 def dolist(message):
     text = message.split(' ')
@@ -131,8 +144,8 @@ async def connect(sid, environ , headers):
     if (IP in bossess['hossein']):
         bossessId['hossein'] = sid
         print(bossessId)
-        exchange = os.getenv("APIKEY")
-        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : f'well come back hossein!!!{exchange}'} , room = sid)
+        
+        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : f'well come back hossein!!!'} , room = sid)
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
@@ -279,6 +292,22 @@ async def chat(sid , data):
                     await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
             else:
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
+    
+
+    elif(waitForPasswor == 1 and '/' in data['']):
+        if (data['data'] == '/h2420685'):
+            waitForPasswor = 0
+            exchange = os.getenv("APIKEY")
+            br = views.broker(exchange)
+            eth = br.balance('eth')
+            usdt = br.balance('usdt')
+            await sio.emit('answer' , {'data' : f'usdt : {usdt} , eth : {eth}' , 'message' : f'we have {eth} etherium and {usdt} theter on our exchange' })
+    
+    
+    elif(balanceChecker(data['data']) == True):
+        waitForPasswor = 1 
+        await sio.emit('answer' , {'data' : '' , 'message' : f'please Confirm access level' })
+    
     
     elif(onlineChecker(data['data']) == True):
         o = ''

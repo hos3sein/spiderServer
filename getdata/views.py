@@ -7,6 +7,7 @@ import requests, json, lxml
 import csv
 import json
 import random
+import requests
 def index(request):
     return HttpResponse("test pass!!!!!!!!")
 
@@ -112,6 +113,73 @@ def finalSearch(url):
             allData.append(i)
 
     return(allData)
+
+
+
+
+
+class broker:
+    def __init__(self , token):
+        # self.token = token
+        self.header = f"Authorization: Token {token}"
+        self.loginUrl = 'https://api.nobitex.ir/auth/login/'
+        self.profileUrl = 'https://api.nobitex.ir/users/profile'
+        self.balanceUrl = "https://api.nobitex.ir/users/wallets/balance"
+        
+    
+    def profile(self):
+        user = requests.get(self.profileUrl , headers={"Authorization": self.header})
+        return user
+
+    
+    def balance(self , currency):
+        data = {"currency":currency}
+        balance = requests.post(balance , headers={"Authorization": self.header} , data=data)
+
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+# token = 'dcb32a645496b0b5ba606467741322caae383e61'
+# header = "Authorization: Token yourTOKENhereHEX0000000000"
+# UserAgent = 'TraderBot/spider'
+
+
+# #################################################################
+
+# login = 'https://api.nobitex.ir/auth/login/'
+
+
+# body = {'username' : '09229055682'  , }
+
+
+# profile = 'https://api.nobitex.ir/users/profile'
+
+
+# # profile = requests.get(profile , headers={"Authorization": "Token dcb32a645496b0b5ba606467741322caae383e61"})
+# # print(profile.json())
+
+# #########################################################################
+
+# balance = "https://api.nobitex.ir/users/wallets/balance"
+
+# body2 = {"currency":"usdt"}
+
+# # balance = requests.post(balance , headers={"Authorization": "Token dcb32a645496b0b5ba606467741322caae383e61"} , data=body2)
+# # print(balance.json())
+
+# ##########################################################################3
 
 
 
