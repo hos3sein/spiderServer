@@ -10,8 +10,8 @@ import socketio
 import time
 from interval_timer import IntervalTimer
 from datetime import datetime
-
-
+from dotenv import load_dotenv
+load_dotenv()
 currentDateAndTime = datetime.now()
 
 
@@ -33,6 +33,8 @@ identify = ["i'm" , 'i' , 'I' , "I'm" , 'i am' , 'I am' , 'my' , 'My' , 'name' ,
 waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-do' , 'to-do' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
 onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
+
+waitForPasswor = 0
 
 doinglist = []
 
@@ -129,7 +131,8 @@ async def connect(sid, environ , headers):
     if (IP in bossess['hossein']):
         bossessId['hossein'] = sid
         print(bossessId)
-        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back hossein!!!'} , room = sid)
+        exchange = os.getenv("APIKEY")
+        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : f'well come back hossein!!!{exchange}'} , room = sid)
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
