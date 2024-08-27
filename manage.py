@@ -297,7 +297,7 @@ async def chat(sid , data):
 
     elif(waitForPasswor == 1 and 'password' in data['data']):
         print (data['data'])
-        if (data['data'] == 'password2420685'):
+        if (data['data'] == 'password 2420685' or 'password2420685'):
             waitForPasswor = 0
             exchange = os.getenv("APIKEY")
             br = views.broker(exchange)
