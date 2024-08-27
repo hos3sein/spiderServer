@@ -305,7 +305,7 @@ async def chat(sid , data):
             usdt = br.balance('usdt')
             ETH = "{:.3f}".format(float(eth))
             USDT = "{:.2f}".format(float(usdt))
-            await sio.emit('answer' , {'data' : f'usdt : {usdt} , eth : {eth}' , 'message' : f'we have {ETH} etherium  , and ,  {USDT} theter on our broker' })
+            await sio.emit('answer' , {'data' : f'usdt : {USDT} , eth : {ETH}' , 'message' : f'we have {ETH} etherium  ,  and  ,  {USDT} usdt , on our broker' })
         else :
             await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
     
