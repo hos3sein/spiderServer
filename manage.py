@@ -295,9 +295,9 @@ async def chat(sid , data):
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
 
-    elif(waitForPasswor == 1 and 'password' in data['data']):
+    elif(waitForPasswor == 1 and 'pass' in data['data']):
         print (data['data'])
-        if (data['data'] == 'password 2420685' or 'password2420685'):
+        if (data['data'] == 'pass 2420685' or 'pass2420685'):
             waitForPasswor = 0
             exchange = os.getenv("APIKEY")
             br = views.broker(exchange)
