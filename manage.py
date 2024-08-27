@@ -273,6 +273,7 @@ async def fileChange(sid , data):
 
 @sio.on('message')
 async def chat(sid , data):
+    global waitForPasswor
     if(bossessId['hossein'] != sid and bossessId['elham'] != sid):
         if(waitForAnswer['wait']['id'] == ''):
             valid = False
