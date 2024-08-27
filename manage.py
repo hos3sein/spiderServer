@@ -307,6 +307,12 @@ async def chat(sid , data):
         else :
             await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
     
+
+    elif (waitForPasswor == 1 and 'pass' not in data['data']):
+        waitForPasswor = 0
+        await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
+
+
     elif(balanceChecker(data['data']) == True):
         waitForPasswor = 1 
         await sio.emit('answer' , {'data' : '' , 'message' : f'please Confirm access level' })
