@@ -135,6 +135,7 @@ class broker:
     def balance(self , currency):
         data = {"currency":currency}
         balance = requests.post(self.balanceUrl , headers={"Authorization": self.header} , data=data)
+        return (balance['balance'])
 
    
     
