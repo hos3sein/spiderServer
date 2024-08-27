@@ -128,13 +128,13 @@ class broker:
         
     
     def profile(self):
-        user = requests.get(self.profileUrl , headers={"Authorization": self.header})
+        user = requests.get(self.profileUrl , headers= self.header)
         return (user.json())
 
     
     def balance(self , currency):
         data = {"currency":currency}
-        balance = requests.post(self.balanceUrl , headers={"Authorization": self.header} , data=data)
+        balance = requests.post(self.balanceUrl , headers= self.header , data=data)
         print(balance.json())
         data = balance.json()
         return (data['balance'])
