@@ -320,7 +320,7 @@ async def chat(sid , data):
             await sio.emit('answer' , {'data' :f'{answer} is not number...'  , 'message' : f'{answer} is not number...'} , room=sid)
 
 
-    elif('amount' == data['data']):
+    elif('amount' == data['data'] or 'Amount' == data['data']):
         await sio.emit('answer' , {'data' :f'position amount is {positionDolloe}'  , 'message' : f'position amount is {positionDolloe}'} , room=sid)
 
     elif(waitForPasswor == 1 and 'pass' in data['data']):
