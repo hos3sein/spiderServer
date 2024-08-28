@@ -312,9 +312,16 @@ async def chat(sid , data):
 
     elif('set' in data['data']):
         answer = amount(data['data'])
-        positionDolloe = int(answer)
-        await sio.emit('answer' , {'data' :f'position amount change to {positionDolloe}'  , 'message' : f'position amount change to {positionDolloe}'} , room=sid)
-    
+        try:
+            positionDolloe = int(answer)
+            await sio.emit('answer' , {'data' :f'position amount change to {positionDolloe}'  , 'message' : f'position amount change to {positionDolloe}'} , room=sid)
+        except:
+            await sio.emit('answer' , {'data' :f'{answer} is not number...'  , 'message' : f'{answer} is not number...'} , room=sid)
+
+
+    elif('amount' == data['data']):
+        await sio.emit('answer' , {'data' :f'position amount is {positionDolloe}'  , 'message' : f'position amount is {positionDolloe}'} , room=sid)
+
     elif(waitForPasswor == 1 and 'pass' in data['data']):
         print (data['data'])
         if (data['data'] == 'pass 2420685' or data['data'] == 'pass2420685'):
