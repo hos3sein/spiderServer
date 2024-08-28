@@ -125,6 +125,8 @@ class broker:
         self.loginUrl = 'https://api.nobitex.ir/auth/login/'
         self.profileUrl = 'https://api.nobitex.ir/users/profile'
         self.balanceUrl = "https://api.nobitex.ir/users/wallets/balance"
+        self.positionUrl = 'https://api.nobitex.ir/market/orders/add'
+        self.orders = 'https://api.nobitex.ir/market/orders/list?srcCurrency=btc&dstCurrency=usdt&details=2&status=all&tradeType=spot'
         
     
     def profile(self):
@@ -139,8 +141,19 @@ class broker:
         data = balance.json()
         return (data['balance'])
 
+
+
+    def allOrders(self):
+        data = requests.get(self.orders , headers= {"Authorization" : self.header } )
+        return data.json()
    
-    
+    def makePosition(self , type , amount):
+        price = 0
+        amount = 0
+        if (type == 'buy'):
+            data = {"type":'buy' , "srcCurrency":"usdt" , "dstCurrency":"eth" , "amount":amount , "execution" : 'market' , "price":price }
+        if (type == 'sell'):
+            data = {"type":'sell' , "srcCurrency":"eth" , "dstCurrency":"usdt" , "amount":amount , "execution" : 'market' , "price":price }
 
 
 

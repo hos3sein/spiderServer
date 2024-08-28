@@ -35,13 +35,27 @@ waitForAnswer = {'wait' : {'id' : '' , 'question' : ''}}
 toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-do' , 'to-do' , 'To' , 'to' , 'do' , 'Do' , 'list' , 'List' , 'give' , 'Give' , 'me' , 'Me' , 'a' , 'The' , 'tell' , 'Tell' , 'for' , 'For' , 'can' , 'Can' , 'i' , 'I' ]
 onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
 balance = ['my' , 'My' , 'balance' , 'Balance' , 'give' , 'Give' , 'me' , 'Me' , 'waht' , 'What' , 'is' , 'Is' , 'how' , 'How' , 'much' , 'Much' , 'money' , 'Money' , 'i' , 'I' , 'have' , 'Have' , 'check' , 'Check']
-
+positionAmount = ['set' , 'Set' , 'amount' , 'Amount' , 'position' , 'Position' , 'to' , 'To']
 waitForPasswor = 0
 
 doinglist = []
 
 
 # 'HTTP_MACADDRESS': 'A515FXXU5GVK6'
+
+
+
+def amount(message):
+    text = message.split(' ')
+    amount = ''
+    for i in text:
+        if i in positionAmount:
+            pass
+        else:
+            amount += i
+    return amount.replace(' ' , '')
+
+
 
 def balanceChecker(message):
     text = message.split(' ')
@@ -295,6 +309,10 @@ async def chat(sid , data):
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
 
+    elif('set' in data['data']):
+        answer = amount(data['data'])
+        await sio.emit('answer' , {'data' :f'position amount change to {answer}'  , 'message' : f'position amount change to {answer}'} , room=sid)
+    
     elif(waitForPasswor == 1 and 'pass' in data['data']):
         print (data['data'])
         if (data['data'] == 'pass 2420685' or data['data'] == 'pass2420685'):
