@@ -36,6 +36,7 @@ toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-d
 onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
 balance = ['my' , 'My' , 'balance' , 'Balance' , 'give' , 'Give' , 'me' , 'Me' , 'waht' , 'What' , 'is' , 'Is' , 'how' , 'How' , 'much' , 'Much' , 'money' , 'Money' , 'i' , 'I' , 'have' , 'Have' , 'check' , 'Check']
 positionAmount = ['set' , 'Set' , 'amount' , 'Amount' , 'position' , 'Position' , 'to' , 'To']
+positionDolloe = 0
 waitForPasswor = 0
 
 doinglist = []
@@ -311,7 +312,8 @@ async def chat(sid , data):
 
     elif('set' in data['data']):
         answer = amount(data['data'])
-        await sio.emit('answer' , {'data' :f'position amount change to {answer}'  , 'message' : f'position amount change to {answer}'} , room=sid)
+        positionDolloe = int(answer)
+        await sio.emit('answer' , {'data' :f'position amount change to {positionDolloe}'  , 'message' : f'position amount change to {positionDolloe}'} , room=sid)
     
     elif(waitForPasswor == 1 and 'pass' in data['data']):
         print (data['data'])
