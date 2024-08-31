@@ -36,13 +36,36 @@ toDoList = ['what' , 'is' , 'Is' , 'What' , 'my' , 'My' , 'Todo' , 'todo' ,'To-d
 onlines = ['who' , 'Who' , 'who is' , 'Who is' , 'is' , 'Is' , 'online' , 'Online' , "who's" , "Who's" , 'Whose' , 'whose' , 'get' , 'Get' , 'Me' , 'me']
 balance = ['my' , 'My' , 'balance' , 'Balance' , 'give' , 'Give' , 'me' , 'Me' , 'waht' , 'What' , 'is' , 'Is' , 'how' , 'How' , 'much' , 'Much' , 'money' , 'Money' , 'i' , 'I' , 'have' , 'Have' , 'check' , 'Check']
 positionAmount = ['set' , 'Set' , 'amount' , 'Amount' , 'position' , 'Position' , 'to' , 'To']
+openOrder = ['open' , 'Open' , 'order' , 'Order' , 'buy' , 'Buy' , 'it' , 'It']
+closeOrder = ['close' , 'Close' , 'order' , 'Order' , 'sell' , 'Sell' , 'it' , 'It']
+
+
 positionDolloe = 0
 waitForPasswor = 0
-
+buyWaitForPassword = 0
+sellWaitForPassword = 0
+profitWaitForPassword = 0
 doinglist = []
 
 
 # 'HTTP_MACADDRESS': 'A515FXXU5GVK6'
+
+
+def buyOrSell(message):
+    text = message.split(' ')
+    counter1 = 0
+    counter2 = 0
+    for i in text:
+        if i in openOrder:
+            counter1 += 1
+        elif(i in closeOrder):
+            counter2 += 1
+
+    if (counter1 == len(text)):
+        return 1
+    elif (counter2 == len(text)):
+        return 0
+    # return (1 if counter1 == len(text) else ) 
 
 
 
@@ -290,6 +313,8 @@ async def fileChange(sid , data):
 async def chat(sid , data):
     global waitForPasswor
     global positionDolloe
+    global buyWaitForPassword
+    global sellWaitForPassword
     if(bossessId['hossein'] != sid and bossessId['elham'] != sid):
         if(waitForAnswer['wait']['id'] == ''):
             valid = False
@@ -310,6 +335,78 @@ async def chat(sid , data):
             else:
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
+
+
+    elif (profitWaitForPassword == 1 and 'pass' in data['data']):
+        if (data['data'] == 'pass 2420685' or data['data'] == 'pass2420685'):
+            profitWaitForPassword = 0
+            exchange = os.getenv("APIKEY")
+            br = views.broker(exchange)
+            profit = br.getProfit('monthly')
+            await sio.emit('answer' , {'data' : f'total profit is {profit["totalProfit"]} and all prtcent change of our profit is {profit["totalPercent"]}' , 'message' : f'total profit is {profit["totalProfit"]} and all prtcent change of our profit is {profit["totalPercent"]}'} , room=sid)
+        else:
+            profitWaitForPassword = 0
+            await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' } , room=sid)
+    
+    elif(profitWaitForPassword == 1 and  'pass' not in data['data']):
+        profitWaitForPassword = 0
+        await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' } , room=sid)
+
+    elif('check my profit' in data['data'] or 'Check my profit' in data['data'] or 'Check My Profit' in data['data']):
+        profitWaitForPassword = 1
+        await sio.emit('answer' , {'data' : 'please confirm access level' , 'message' : f'please confirm access level' } , room=sid)
+
+
+    elif('open' in data['data'] or 'close' in data['data'] or 'Open' in data['data'] or 'Close' in data['data']):
+        if (buyOrSell(data['data']) == 1):
+            buyWaitForPassword = 1
+            await sio.emit('answer' , {'data' : 'please confirm access level' , 'message' : f'please confirm access level' } , room=sid)
+        elif(buyOrSell(data['data']) == 0):
+            sellWaitForPassword = 1
+            await sio.emit('answer' , {'data' : 'please confirm access level' , 'message' : f'please confirm access level' } , room=sid)
+        
+    
+    elif (buyWaitForPassword == 1 and 'pass' not in data['data']):
+        buyWaitForPassword = 0
+        await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' } , room=sid)
+
+
+    elif (sellWaitForPassword == 1 and 'pass' not in data['data']):
+        sellWaitForPassword = 0
+        await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' } , room=sid)
+
+
+    elif (buyWaitForPassword == 1 and 'pass' in data['data']):
+        print (data['data'])
+        if (data['data'] == 'pass 2420685' or data['data'] == 'pass2420685'):
+            buyWaitForPassword = 0
+            exchange = os.getenv("APIKEY")
+            br = views.broker(exchange)
+            positionStatus = br.makePosition('buy' , positionDolloe )
+            if (positionStatus['status'] == 'ok'):
+                await sio.emit('answer' , {'data' : f'position made successfully ' , 'message' : f'position made successfully' })
+            else:
+                await sio.emit('answer' , {'data' : f'opening position failed ' , 'message' : f'opening position failed {positionStatus}' })
+        else :
+            await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
+
+
+    elif (sellWaitForPassword == 1 and 'pass' in data['data']):
+        print (data['data'])
+        if (data['data'] == 'pass 2420685' or data['data'] == 'pass2420685'):
+            sellWaitForPassword = 0
+            exchange = os.getenv("APIKEY")
+            br = views.broker(exchange)
+            positionStatus = br.makePosition('sell' , positionDolloe )
+            if (positionStatus['status'] == 'ok'):
+                await sio.emit('answer' , {'data' : f'position made successfully ' , 'message' : f'position made successfully' })
+            else:
+                await sio.emit('answer' , {'data' : f'opening position failed ' , 'message' : f'opening position failed {positionStatus}' })
+        else :
+            await sio.emit('answer' , {'data' : 'acccess denied' , 'message' : f'access denied' })
+
+
+
 
     elif('set' in data['data']):
         answer = amount(data['data'])

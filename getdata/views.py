@@ -127,13 +127,33 @@ class broker:
         self.balanceUrl = "https://api.nobitex.ir/users/wallets/balance"
         self.positionUrl = 'https://api.nobitex.ir/market/orders/add'
         self.orders = 'https://api.nobitex.ir/market/orders/list?srcCurrency=btc&dstCurrency=usdt&details=2&status=all&tradeType=spot'
-        
+        self.profit = 'https://api.nobitex.ir/users/portfolio'
     
     def profile(self):
         user = requests.get(self.profileUrl ,  headers= {"Authorization" : self.header })
         return (user.json())
 
     
+
+    def getProfit(self , time):
+        match time:
+           case 'weekly':
+                url = f'{self.profit}/last-week-daily-total-profit'
+                data =  requests.post(url , headers = {"Authorization" : self.header })
+                return (data.json())
+           case 'monthly':
+                url = f'{self.profit}/last-month-total-profit'
+                data =  requests.post(url , headers = {"Authorization" : self.header })
+                truelyData = {'totalProfit' : data.json()['total_profit'] , 'totalPercent' : data.json()['total_profit_percentage']}
+                return (truelyData)
+            
+
+        #    case 'all':
+        #         print('hello')
+            
+
+
+
     def balance(self , currency):
         data = {"currency":currency}
         balance = requests.post(self.balanceUrl , headers= {"Authorization" : self.header } , data=data)
@@ -152,9 +172,10 @@ class broker:
         amount = 0
         if (type == 'buy'):
             data = {"type":'buy' , "srcCurrency":"usdt" , "dstCurrency":"eth" , "amount":amount , "execution" : 'market' , "price":price }
-        if (type == 'sell'):
+            return (data.json())
+        elif (type == 'sell'):
             data = {"type":'sell' , "srcCurrency":"eth" , "dstCurrency":"usdt" , "amount":amount , "execution" : 'market' , "price":price }
-
+            return (data.json())
 
 
 
