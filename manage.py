@@ -23,7 +23,7 @@ sio.attach(app)
 lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
-bossess = {'hossein' : ['V816.0.2.0.UGPMIXM'] , 'elham' : ['A515FXXU5GVK6'] , 'laptop' : ['98-59-7A-B3-41-4C']}
+bossess = {'hossein' : ['V816.0.2.0.UGPMIXM'] , 'elham' : ['A515FXXU5GVK6'] , 'laptop' : ['98-59-7A-B3-41-4C'] , 'yasin' : ['']}
 bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
@@ -200,6 +200,17 @@ async def connect(sid, environ , headers):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)
                     
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
+    
+    # elif (IP in bossess['yasin']):
+    #     bossessId['yasin'] = sid
+    #     print(bossessId)
+    #     await sio.emit('answer', {'data' :  f'yasin is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'hello yasin!!!'} , room = sid)
+    #     if (len(waitedMessage['yasin']) != 0):
+    #             for i in range(len(waitedMessage['yasin'])):
+    #                 await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['yasin'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['yasin'][i]} , room = sid)
+                    
+    #     await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
+
     else:
         print('is this test>>>')
         waitForAnswer[sid] = {'question' : 'identify'}
@@ -317,13 +328,13 @@ async def chat(sid , data):
     global sellWaitForPassword
     if(bossessId['hossein'] != sid and bossessId['elham'] != sid):
         if(waitForAnswer['wait']['id'] == ''):
-            valid = False
-            for i in bossessId.keys():
-                if bossessId[i] == sid:
-                    valid = True
-            if (valid != True):
-                await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
-                await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
+            # valid = False
+            # for i in bossessId.keys():
+            #     if bossessId[i] == sid:
+            #         valid = True
+            # if (valid != True):
+            await sio.emit('answer' , {'data' : f'someone with sid {sid} want to speak with me' , 'message' : f'someone with sid {sid} want to speak with me'} , room=bossessId['hossein'])
+            await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
         elif (waitForAnswer['wait']['id'] != ''):
             if(waitForAnswer['wait']['id'] == sid):
                 if (waitForAnswer['wait']['question'] == 'identify'):
