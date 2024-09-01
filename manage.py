@@ -24,7 +24,7 @@ lastStatus = ['no last status ...']
 chatHistory = []
 validIp = ['62.60.164.218' , '91.107.153.25']
 bossess = {'hossein' : ['V816.0.2.0.UGPMIXM'] , 'elham' : ['A515FXXU5GVK6'] , 'laptop' : ['98-59-7A-B3-41-4C'] , 'yasin' : ['']}
-bossessId = {'hossein' : '' , 'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
+bossessId = {'hossein' : '' , 'yasin' : '' ,'elham' : '' , 'laptop' : '' , 'spot' : '' , 'futures' : '' , 'analyzor' : '' , 'position' : ''}
 waitedMessage = {'hossein' : [] , 'elham' : []}
 Status = ['give' , 'me' , 'a' ,  'last' ,'status' , 'give' , 'me' , 'last', 'status' , 'tell', 'me' ,'last', 'status' , 'whats', 'the', 'last', 'status' , 'tell' , 'me' , 'the' , 'last' , 'status' , 'last' , 'status' , 'whats' , 'spider' , 'status' , 'whats' , 'status']
 sendMessage = ['say' , 'tell' , 'elie' , 'ellie' , 'ely' , 'eli' , 'elham' , 'alham' , 'to' ,'Say' , 'Tell' , 'Elie' , 'Ellie' , 'Ely' , 'Eli' , 'Elham' , 'Alham' , 'To' , 'hossein' , 'Hossein' , 'Hussain' , 'hussain' , 'hussein' , 'Hissein' ]
@@ -201,15 +201,15 @@ async def connect(sid, environ , headers):
                     
         await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
     
-    # elif (IP in bossess['yasin']):
-    #     bossessId['yasin'] = sid
-    #     print(bossessId)
-    #     await sio.emit('answer', {'data' :  f'yasin is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'hello yasin!!!'} , room = sid)
-    #     if (len(waitedMessage['yasin']) != 0):
-    #             for i in range(len(waitedMessage['yasin'])):
-    #                 await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['yasin'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['yasin'][i]} , room = sid)
+    elif (IP in bossess['yasin']):
+        bossessId['yasin'] = sid
+        print(bossessId)
+        await sio.emit('answer', {'data' :  f'yasin is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'hello yasin!!!'} , room = sid)
+        if (len(waitedMessage['yasin']) != 0):
+                for i in range(len(waitedMessage['yasin'])):
+                    await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['yasin'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['yasin'][i]} , room = sid)
                     
-    #     await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
+        await sio.emit('backData' ,{'data' :f'>>>connection reset => last status => {lastStatus[-1]}'} , room=sid)
 
     else:
         print('is this test>>>')
@@ -276,6 +276,10 @@ async def disconnect(sid):
         print('elham disconnected')
         await sio.emit('answer' , {"data" : 'elham desconnected' , 'message' : 'elham disconnected'} , room=bossessId['hossein'])
         bossessId['elham'] = ''
+    elif(bossessId['yasin'] == sid):
+        print('yasin disconnected')
+        await sio.emit('answer' , {"data" : 'yasin desconnected' , 'message' : 'yasin disconnected'} , room=bossessId['hossein'])
+        bossessId['yasin'] = ''
     print(f'disconnect device with ip : ' , sid)
 
 
@@ -343,6 +347,7 @@ async def chat(sid , data):
                     waitForAnswer['wait']['id'] = ''
                     waitForAnswer['wait']['question'] = ''
                     await sio.emit('answer' , {'data' : f'nice to meet you {name}' , 'message' : f'nice to meet you {name}'} , room=sid)
+
             else:
                 await sio.emit('answer' , {'data' : f'you are not allowed to speak with me' , 'message' : f'you are not allowed to speak with me'} , room=sid)
     
