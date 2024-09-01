@@ -183,7 +183,7 @@ async def connect(sid, environ , headers):
         bossessId['hossein'] = sid
         print(bossessId)
         
-        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : f'well come back hossein!!!'} , room = sid)
+        await sio.emit('answer', {'data' :  f'connection is true for just you {environ['HTTP_X_REAL_IP']}' , 'message' : f'hello hossein!!!'} , room = sid)
         if (len(waitedMessage['hossein']) != 0):
                 for i in range(len(waitedMessage['hossein'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from elham => {waitedMessage['hossein'][i]}' , 'message' : 'you have unread message from hosseind' +'  ' +  waitedMessage['hossein'][i] } , room = sid)
@@ -194,7 +194,7 @@ async def connect(sid, environ , headers):
     elif (IP in bossess['elham']):
         bossessId['elham'] = sid
         print(bossessId)
-        await sio.emit('answer', {'data' :  f'elham is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'well come back elham!!!'} , room = sid)
+        await sio.emit('answer', {'data' :  f'elham is connected to server with ip : {environ['HTTP_X_REAL_IP']}' , 'message' : 'hello elham!!!'} , room = sid)
         if (len(waitedMessage['elham']) != 0):
                 for i in range(len(waitedMessage['elham'])):
                     await sio.emit('answer', {'data' :  f'you have unread message from hossein => {waitedMessage['elham'][i]}' , 'message' : 'you have unread message from elhamd' +'  '+ waitedMessage['elham'][i]} , room = sid)

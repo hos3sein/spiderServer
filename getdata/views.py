@@ -81,10 +81,12 @@ def NLP(message):
         return goodSpeechAnswer[rand]
     elif (message in toDo):
         return ('im not sure i can do this for now , give me more time!!')
+    # elif(message == 'how is going on')
     elif (message in speaking):
         return ('im a assistant that developed by hossein and elham for helping them but im still under the developing mode')
     elif(message == ''):
         return ('i cant hear you sir')
+    
     else:
         return ('i cant understand what you mean...')
     
