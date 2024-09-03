@@ -326,6 +326,7 @@ async def fileChange(sid , data):
 
 @sio.on('message')
 async def chat(sid , data):
+    global profitWaitForPassword
     global waitForPasswor
     global positionDolloe
     global buyWaitForPassword
